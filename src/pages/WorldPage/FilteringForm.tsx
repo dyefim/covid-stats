@@ -1,6 +1,6 @@
 import React from 'react';
 import { Filters } from '../../App';
-import { getTodayDate } from '../../utils/dates';
+import { getTodayDate, getNextDay } from '../../utils/dates';
 
 interface Props {
   filters: Filters;
@@ -9,6 +9,7 @@ interface Props {
 
 const FilteringForm = ({ filters, setFilters }: Props) => {
   const today = getTodayDate();
+  const tomorrow = getNextDay();
 
   const onDateRangeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name: fieldName, value } = event.target;
@@ -55,7 +56,7 @@ const FilteringForm = ({ filters, setFilters }: Props) => {
           name="date_to"
           id="date_to"
           min="2019-01-01"
-          max={today}
+          max={tomorrow}
           value={filters.date_to}
           onChange={onDateRangeChange}
         />

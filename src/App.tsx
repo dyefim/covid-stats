@@ -5,7 +5,7 @@ import About from './pages/About';
 import ByCountryAfterDate from './pages/ByCountryAfterDate';
 import World from './pages/WorldPage';
 import makeRequest from './utils/makeRequest';
-import { getTodayDate, getYesterday } from './utils/dates';
+import { getTodayDate, jumpDays } from './utils/dates';
 
 export interface Filters {
   date_from: string;
@@ -14,10 +14,12 @@ export interface Filters {
 }
 
 const App = () => {
+  const today = getTodayDate();
+
   const [filters, setFilters] = useState<Filters>({
-    date_from: getYesterday(),
-    date_to: getTodayDate(),
-    cases: 'confirmed',
+    date_from: jumpDays(today, -7),
+    date_to: today,
+    cases: 'confirmed', // TODO extract to own useState
   });
 
   const [data, setData] = useState([]);
@@ -25,6 +27,16 @@ const App = () => {
   useEffect(() => {
     const getData = async () => {
       const baseUrl = 'https://api.covid19api.com';
+
+      // if (filters.date_from > filters.date_to) {
+      //   alert('Please, enter valid date range!');
+
+      //   setFilters({
+      //     ...filters,
+      //     date_to: getNextDay(filters.date_from),
+      //   });
+      //   return;
+      // }
 
       const responseData = await makeRequest(
         `${baseUrl}/world?from=${filters.date_from}&to=${filters.date_to}`
