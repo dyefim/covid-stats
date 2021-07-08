@@ -8,11 +8,17 @@ const requestOptions: RequestOptions = {
   redirect: 'follow',
 };
 
-const makeRequest = (url: string) =>
-  fetch(url, requestOptions)
-    .then((response) => response.json())
-    // .then((result) => console.log(result))
-    // .then((result) => console.log(JSON.stringify(result, null, 2)))
-    .catch((error) => console.log('error', error));
+const makeRequest = async (url: string) => {
+  try {
+    const response = await fetch(url, requestOptions);
+
+    const result = await response.json();
+
+    // console.log(result);
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export default makeRequest;
