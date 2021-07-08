@@ -1,41 +1,35 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Navigation from './Navigation';
+import About from './pages/About';
+import ByCountryAfterDate from './pages/ByCountryAfterDate';
+import World from './pages/World';
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-      <header className="App-header">СOVID Stats</header>
+      <header>СOVID Stats</header>
       <Router>
         <div>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/dashboard">Dashboard</Link>
-            </li>
-          </ul>
+          <Navigation />
 
           <hr />
 
           <Switch>
             <Route exact path="/">
-              <div>Home</div>
+              <World />
+            </Route>
+            <Route path="/by-country-after-date">
+              <ByCountryAfterDate />
             </Route>
             <Route path="/about">
-              <div>About</div>
-            </Route>
-            <Route path="/dashboard">
-              <div>Dashboard</div>
+              <About />
             </Route>
           </Switch>
         </div>
       </Router>
     </div>
   );
-}
+};
 
 export default App;
