@@ -3,28 +3,37 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navigation from './Navigation';
 import About from './pages/About';
 import ByCountryAfterDate from './pages/ByCountryAfterDate';
-import World from './pages/World';
+import World from './pages/WorldPage';
 import makeRequest from './utils/makeRequest';
 import { getTodayDate, getYesterday } from './utils/dates';
 
 export interface Filters {
   date_from: string;
   date_to: string;
-  case: 'confirmed' | 'recovered' | 'deaths';
+  cases: 'confirmed' | 'recovered' | 'deaths';
 }
 
 const App = () => {
   const [filters, setFilters] = useState<Filters>({
     date_from: getYesterday(),
     date_to: getTodayDate(),
-    case: 'confirmed',
+    cases: 'confirmed',
   });
 
+  const [data, setData] = useState([]);
+
   useEffect(() => {
-    const baseUrl = 'https://api.covid19api.com';
-    makeRequest(
-      `${baseUrl}/world?from=${filters.date_from}&to=${filters.date_to}`
-    );
+    const getData = async () => {
+      const baseUrl = 'https://api.covid19api.com';
+
+      const responseData = await makeRequest(
+        `${baseUrl}/world?from=${filters.date_from}&to=${filters.date_to}`
+      );
+
+      setData(responseData);
+    };
+
+    getData();
   }, [filters]);
 
   return (
@@ -38,7 +47,7 @@ const App = () => {
 
           <Switch>
             <Route exact path="/">
-              <World filters={filters} setFilters={setFilters} />
+              <World data={data} filters={filters} setFilters={setFilters} />
             </Route>
             <Route path="/by-country-after-date">
               <ByCountryAfterDate />
