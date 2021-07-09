@@ -3,19 +3,19 @@ import { Filters } from '../../App';
 import { getTodayDate, getNextDay } from '../../utils/dates';
 
 interface Props {
-  filters: Filters;
-  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
+  globalFilters: Filters;
+  setGlobalFilters: React.Dispatch<React.SetStateAction<Filters>>;
 }
 
-const FilteringForm = ({ filters, setFilters }: Props) => {
+const FilteringForm = ({ globalFilters, setGlobalFilters }: Props) => {
   const today = getTodayDate();
   const tomorrow = getNextDay();
 
-  const onDateRangeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name: fieldName, value } = event.target;
 
-    setFilters({
-      ...filters,
+    setGlobalFilters({
+      ...globalFilters,
       [fieldName]: value,
     });
   };
@@ -25,13 +25,13 @@ const FilteringForm = ({ filters, setFilters }: Props) => {
   const onCaseTypeSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     event.preventDefault();
 
-    const value = event.target.value as Props['filters']['cases'];
+    const value = event.target.value as Props['globalFilters']['cases'];
 
     if (!caseOptions.includes(value)) {
       throw new Error('Expected valid case option: ' + caseOptions);
     }
 
-    setFilters({ ...filters, cases: value });
+    setGlobalFilters({ ...globalFilters, cases: value });
   };
 
   return (
@@ -45,8 +45,8 @@ const FilteringForm = ({ filters, setFilters }: Props) => {
           id="date_from"
           min="2019-01-01"
           max={today}
-          value={filters.date_from}
-          onChange={onDateRangeChange}
+          value={globalFilters.date_from}
+          onChange={handleDateChange}
         />
       </label>
       <label htmlFor="date_to">
@@ -57,8 +57,8 @@ const FilteringForm = ({ filters, setFilters }: Props) => {
           id="date_to"
           min="2019-01-01"
           max={tomorrow}
-          value={filters.date_to}
-          onChange={onDateRangeChange}
+          value={globalFilters.date_to}
+          onChange={handleDateChange}
         />
       </label>
       <label htmlFor="cases">
@@ -66,7 +66,7 @@ const FilteringForm = ({ filters, setFilters }: Props) => {
         <select
           name="cases"
           id="cases"
-          value={filters.cases}
+          value={globalFilters.cases}
           onChange={onCaseTypeSelect}
         >
           {caseOptions.map((option) => (

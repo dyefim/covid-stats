@@ -1,6 +1,5 @@
 import React from 'react';
 import { Filters } from '../../App';
-import toTitleCase from '../../utils/toTitleCase';
 import FilteringForm from './FilteringForm';
 import {
   LineChart,
@@ -23,12 +22,12 @@ interface Props {
     TotalDeaths: number;
     TotalRecovered: number;
   }[];
-  filters: Filters;
-  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
+  globalFilters: Filters;
+  setGlobalFilters: React.Dispatch<React.SetStateAction<Filters>>;
 }
 
-const World = ({ data, filters, setFilters }: Props) => {
-  const caseType = toTitleCase(filters.cases);
+const World = ({ data, globalFilters, setGlobalFilters }: Props) => {
+  const caseType = globalFilters.cases;
 
   const preparedData = data.map((d) => ({
     date: getYyyyMmDd(d.Date),
@@ -37,12 +36,15 @@ const World = ({ data, filters, setFilters }: Props) => {
     recovered: d.NewRecovered,
   }));
 
-  // console.log(preparedData);
+  console.log(preparedData);
 
   return (
     <div>
       <h1>World</h1>
-      <FilteringForm filters={filters} setFilters={setFilters} />
+      <FilteringForm
+        globalFilters={globalFilters}
+        setGlobalFilters={setGlobalFilters}
+      />
 
       <div style={{ width: '100%', maxWidth: 800, height: 300 }}>
         <ResponsiveContainer>
@@ -74,7 +76,7 @@ const World = ({ data, filters, setFilters }: Props) => {
       <ul>
         {caseType}
         {preparedData.map((report, i) => {
-          const numberofCases = report[caseType as Filters['cases']];
+          const numberofCases = report[caseType];
 
           return (
             <li key={`${numberofCases}_${caseType}_${i}`}>{numberofCases}</li>

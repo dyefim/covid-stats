@@ -16,7 +16,7 @@ export interface Filters {
 const App = () => {
   const today = getTodayDate();
 
-  const [filters, setFilters] = useState<Filters>({
+  const [globalFilters, setGlobalFilters] = useState<Filters>({
     date_from: jumpDays(today, -7),
     date_to: today,
     cases: 'confirmed', // TODO extract to own useState
@@ -28,25 +28,25 @@ const App = () => {
     const getData = async () => {
       const baseUrl = 'https://api.covid19api.com';
 
-      // if (filters.date_from > filters.date_to) {
+      // if (globalFilters.date_from > globalFilters.date_to) {
       //   alert('Please, enter valid date range!');
 
-      //   setFilters({
-      //     ...filters,
-      //     date_to: getNextDay(filters.date_from),
+      //   setGlobalFilters({
+      //     ...globalFilters,
+      //     date_to: getNextDay(globalFilters.date_from),
       //   });
       //   return;
       // }
 
       const responseData = await makeRequest(
-        `${baseUrl}/world?from=${filters.date_from}&to=${filters.date_to}`
+        `${baseUrl}/world?from=${globalFilters.date_from}&to=${globalFilters.date_to}`
       );
 
       setData(responseData);
     };
 
     getData();
-  }, [filters]);
+  }, [globalFilters]);
 
   return (
     <div className="App">
@@ -59,7 +59,11 @@ const App = () => {
 
           <Switch>
             <Route exact path="/">
-              <World data={data} filters={filters} setFilters={setFilters} />
+              <World
+                data={data}
+                globalFilters={globalFilters}
+                setGlobalFilters={setGlobalFilters}
+              />
             </Route>
             <Route path="/by-country-after-date">
               <ByCountryAfterDate />
