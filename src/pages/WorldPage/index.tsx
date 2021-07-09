@@ -36,7 +36,7 @@ const World = ({ data, globalFilters, setGlobalFilters }: Props) => {
     recovered: d.NewRecovered,
   }));
 
-  console.log(preparedData);
+  // console.log(preparedData);
 
   return (
     <div>

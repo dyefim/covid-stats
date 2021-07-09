@@ -5,13 +5,21 @@ import About from './pages/About';
 import ByCountryAfterDate from './pages/ByCountryAfterDate';
 import World from './pages/WorldPage';
 import makeRequest from './utils/makeRequest';
-import { getTodayDate, jumpDays } from './utils/dates';
+import { getTodayDate, getYesterday, jumpDays } from './utils/dates';
 
 export interface Filters {
   date_from: string;
   date_to: string;
   cases: 'confirmed' | 'recovered' | 'deaths';
 }
+
+export interface FiltersByCountry {
+  date_from: string;
+  country: string;
+  cases: 'confirmed' | 'recovered' | 'deaths';
+}
+
+const baseUrl = 'https://api.covid19api.com';
 
 const App = () => {
   const today = getTodayDate();
@@ -22,12 +30,17 @@ const App = () => {
     cases: 'confirmed', // TODO extract to own useState
   });
 
-  const [data, setData] = useState([]);
+  const [filtersByCountry, setFiltersByCountry] = useState<FiltersByCountry>({
+    date_from: getYesterday(),
+    country: 'ukraine',
+    cases: 'confirmed',
+  });
+
+  const [globalData, setGlobalData] = useState([]);
+  const [countryData, setCountryData] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
-      const baseUrl = 'https://api.covid19api.com';
-
       // if (globalFilters.date_from > globalFilters.date_to) {
       //   alert('Please, enter valid date range!');
 
@@ -42,11 +55,25 @@ const App = () => {
         `${baseUrl}/world?from=${globalFilters.date_from}&to=${globalFilters.date_to}`
       );
 
-      setData(responseData);
+      setGlobalData(responseData);
     };
 
     getData();
   }, [globalFilters]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const responseData = await makeRequest(
+        `${baseUrl}/live/country/${filtersByCountry.country}/status/${filtersByCountry.cases}/date/${filtersByCountry.date_from}`
+      );
+
+      console.log(responseData);
+
+      setCountryData(responseData);
+    };
+
+    getData();
+  }, [filtersByCountry]);
 
   return (
     <div className="App">
@@ -60,13 +87,17 @@ const App = () => {
           <Switch>
             <Route exact path="/">
               <World
-                data={data}
+                data={globalData}
                 globalFilters={globalFilters}
                 setGlobalFilters={setGlobalFilters}
               />
             </Route>
             <Route path="/by-country-after-date">
-              <ByCountryAfterDate />
+              <ByCountryAfterDate
+                data={countryData}
+                filtersByCountry={filtersByCountry}
+                setFiltersByCountry={setFiltersByCountry}
+              />
             </Route>
             <Route path="/about">
               <About />
