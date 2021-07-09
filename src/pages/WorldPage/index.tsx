@@ -14,20 +14,27 @@ import {
 import { getYyyyMmDd } from '../../utils/dates';
 
 interface Props {
-  data: ({
-    [key: string]: number;
-  } & { Date: string })[];
+  data: {
+    Date: string;
+    NewConfirmed: number;
+    NewDeaths: number;
+    NewRecovered: number;
+    TotalConfirmed: number;
+    TotalDeaths: number;
+    TotalRecovered: number;
+  }[];
   filters: Filters;
   setFilters: React.Dispatch<React.SetStateAction<Filters>>;
 }
 
 const World = ({ data, filters, setFilters }: Props) => {
   const caseType = toTitleCase(filters.cases);
-  const caseTypeKey = 'New' + caseType;
 
-  const preparedData = data.map(({ Date, ...rest }) => ({
-    date: getYyyyMmDd(Date),
-    ...rest,
+  const preparedData = data.map((d) => ({
+    date: getYyyyMmDd(d.Date),
+    confirmed: d.NewConfirmed,
+    deaths: d.NewDeaths,
+    recovered: d.NewRecovered,
   }));
 
   // console.log(preparedData);
@@ -47,7 +54,7 @@ const World = ({ data, filters, setFilters }: Props) => {
           >
             <Line
               type="monotone"
-              dataKey={caseTypeKey}
+              dataKey={caseType}
               stroke="#55c"
               strokeWidth="2"
             />
@@ -66,8 +73,8 @@ const World = ({ data, filters, setFilters }: Props) => {
 
       <ul>
         {caseType}
-        {data.map((report, i) => {
-          const numberofCases = report[caseTypeKey];
+        {preparedData.map((report, i) => {
+          const numberofCases = report[caseType as Filters['cases']];
 
           return (
             <li key={`${numberofCases}_${caseType}_${i}`}>{numberofCases}</li>
