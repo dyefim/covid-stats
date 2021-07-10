@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Navigation from './Navigation';
-import { appendToState } from './utils/stateMutations';
 import { getTodayDate, jumpDays } from './utils/dates';
-import { getLocalState, saveToLocalState } from './utils/localStorage';
 import Routes from './pages/Routes';
-import requestCountryCases from './services/requestCountryCases';
-import requestGlobalData from './services/requestGlobalData';
-import requestCountries from './services/requestCountries';
+import useCountries from './hooks/useCountries';
+import useSelectedCountries from './hooks/useSelectedCountries';
+import useGlobalData from './hooks/useGlobalData';
+import useCountriesData from './hooks/useCountriesData';
 
 export type CaseType = 'confirmed' | 'recovered' | 'deaths';
 
@@ -28,75 +27,30 @@ export interface Country {
   ISO2: string;
 }
 
-
 const App = () => {
   const today = getTodayDate();
+  const countries = useCountries();
+
+  const { selectedCountries, setSelectedCountries } = useSelectedCountries();
 
   const [globalFilters, setGlobalFilters] = useState<GlobalFilters>({
-    date_from: jumpDays(today, -7),
+    date_from: jumpDays(-7),
     date_to: today,
-    typeOfCases: 'confirmed', // TODO extract to own useState
+    typeOfCases: 'confirmed',
   });
 
   const [filtersForLiveData, setFiltersForLiveData] =
     useState<FiltersForLiveData>({
-      date_from: jumpDays(today, -7),
+      date_from: jumpDays(-7),
       typeOfCases: 'confirmed',
     });
 
-  const [countries, setCountries] = useState<Country[]>([]);
+  const globalData = useGlobalData(globalFilters);
 
-  useEffect(() => {
-    const getCountriesList = async () => {
-      const responseData = await requestCountries();
-
-      setCountries(responseData);
-    };
-
-    getCountriesList();
-  }, []);
-
-  const [selectedCountries, setSelectedCountries] = useState<string[]>(
-    () => getLocalState('selectedCountries') || ['ukraine', 'russia']
-  );
-
-  useEffect(() => {
-    saveToLocalState('selectedCountries', selectedCountries);
-  }, [selectedCountries]);
-
-  const [globalData, setGlobalData] = useState([]);
-  const [countriesDataByDate, setCountriesDataByDate] = useState({});
-
-  useEffect(() => {
-    const getGlobalData = async () => {
-      const responseData = await requestGlobalData({ ...globalFilters });
-
-      setGlobalData(responseData);
-    };
-
-    getGlobalData();
-  }, [globalFilters]);
-
-  useEffect(() => {
-    const getDataByCounry = async (country: string) => {
-      const responseData = await requestCountryCases({
-        country,
-        ...filtersForLiveData,
-      });
-
-      return responseData;
-    };
-
-    setCountriesDataByDate({});
-
-    selectedCountries.forEach(async (country) => {
-      const response = await getDataByCounry(country);
-
-      if (response.length) {
-        setCountriesDataByDate((state) => appendToState(state, response));
-      }
-    });
-  }, [selectedCountries, filtersForLiveData]);
+  const countriesDataByDate = useCountriesData({
+    selectedCountries,
+    filtersForLiveData,
+  });
 
   return (
     <div className="App">

@@ -2,11 +2,11 @@ const getYyyyMmDd = (date: string) => date.replace(/T(.)+/, '');
 
 const getTodayDate = () => getYyyyMmDd(new Date().toISOString());
 
-type StringOrObjectDate = Date | string;
+type StringOrObjectDate = Date | string | undefined;
 
 const jumpDays = (
-  date: StringOrObjectDate = new Date(),
-  daysToJump: number
+  daysToJump: number,
+  date: StringOrObjectDate = new Date()
 ) => {
   const d = new Date(date);
 
@@ -16,10 +16,10 @@ const jumpDays = (
 };
 
 const getPreviousDay = (date: StringOrObjectDate = new Date()) =>
-  jumpDays(date, -1);
+  jumpDays(-1, date);
 
 const getNextDay = (date: StringOrObjectDate = new Date()) =>
-  jumpDays(date, +1);
+  jumpDays(+1, date);
 
 const getYesterday = () => getPreviousDay(getTodayDate());
 
