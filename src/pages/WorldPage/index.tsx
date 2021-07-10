@@ -1,4 +1,3 @@
-import React from 'react';
 import { GlobalFilters } from '../../App';
 import FilteringForm from './FilteringForm';
 import {
@@ -12,18 +11,20 @@ import {
 } from 'recharts';
 import { getYyyyMmDd } from '../../utils/dates';
 
+export type GlobalData = {
+  Date: string;
+  NewConfirmed: number;
+  NewDeaths: number;
+  NewRecovered: number;
+  TotalConfirmed: number;
+  TotalDeaths: number;
+  TotalRecovered: number;
+}[];
+
 export interface WorldProps {
-  data: {
-    Date: string;
-    NewConfirmed: number;
-    NewDeaths: number;
-    NewRecovered: number;
-    TotalConfirmed: number;
-    TotalDeaths: number;
-    TotalRecovered: number;
-  }[];
+  data: GlobalData;
   globalFilters: GlobalFilters;
-  setGlobalFilters: React.Dispatch<React.SetStateAction<GlobalFilters>>;
+  setGlobalFilters: (filters: GlobalFilters) => void;
 }
 
 const World = ({ data, globalFilters, setGlobalFilters }: WorldProps) => {

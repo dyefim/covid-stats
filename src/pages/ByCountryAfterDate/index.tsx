@@ -45,11 +45,9 @@ interface Props {
   };
   countries: Country[];
   selectedCountries: string[];
-  setSelectedCountries: React.Dispatch<React.SetStateAction<string[]>>;
+  setSelectedCountries: (countries: string[]) => void;
   filtersForLiveData: FiltersForLiveData;
-  setFiltersForLiveData: React.Dispatch<
-    React.SetStateAction<FiltersForLiveData>
-  >;
+  setFiltersForLiveData: (filters: FiltersForLiveData) => void;
 }
 
 const ByCountryAfterDate = ({

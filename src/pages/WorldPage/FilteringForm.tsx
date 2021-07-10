@@ -4,7 +4,7 @@ import { getTodayDate, getNextDay } from '../../utils/dates';
 
 interface Props {
   globalFilters: GlobalFilters;
-  setGlobalFilters: React.Dispatch<React.SetStateAction<GlobalFilters>>;
+  setGlobalFilters: (filters: GlobalFilters) => void;
 }
 
 const FilteringForm = ({ globalFilters, setGlobalFilters }: Props) => {

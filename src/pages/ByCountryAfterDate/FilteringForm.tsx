@@ -4,12 +4,10 @@ import { getNextDay } from '../../utils/dates';
 
 interface Props {
   filtersForLiveData: FiltersForLiveData;
-  setFiltersForLiveData: React.Dispatch<
-    React.SetStateAction<FiltersForLiveData>
-  >;
+  setFiltersForLiveData: (filters: FiltersForLiveData) => void;
   countries: Country[];
   selectedCountries: string[];
-  setSelectedCountries: React.Dispatch<React.SetStateAction<string[]>>;
+  setSelectedCountries: (countries: string[]) => void;
 }
 
 const FilteringForm = ({
