@@ -1,5 +1,9 @@
 import React from 'react';
-import { CaseType, Country, FiltersForLiveData } from '../../App';
+import { Country, FiltersForLiveData } from '../../App';
+import useCaseTypeSelection, {
+  caseOptions,
+} from '../../hooks/events/useCaseTypeSelection';
+import useDateSelection from '../../hooks/events/useDateSelection';
 import { getNextDay } from '../../utils/dates';
 
 interface Props {
@@ -19,30 +23,9 @@ const FilteringForm = ({
 }: Props) => {
   const tomorrow = getNextDay();
 
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name: fieldName, value } = event.target;
+  const handleDateChange = useDateSelection(setFiltersForLiveData);
 
-    setFiltersForLiveData({
-      ...filtersForLiveData,
-      [fieldName]: value,
-    });
-  };
-
-  const caseOptions = ['confirmed', 'recovered', 'deaths'];
-
-  const handleCaseTypeSelection = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    event.preventDefault();
-
-    const value = event.target.value as CaseType;
-
-    if (!caseOptions.includes(value)) {
-      throw new Error('Expected valid case option: ' + caseOptions);
-    }
-
-    setFiltersForLiveData({ ...filtersForLiveData, typeOfCases: value });
-  };
+  const handleCaseTypeSelection = useCaseTypeSelection(setFiltersForLiveData);
 
   const handleCountriesSelection = (
     event: React.ChangeEvent<HTMLSelectElement>

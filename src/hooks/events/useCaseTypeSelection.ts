@@ -1,0 +1,24 @@
+import { CaseType } from '../../App';
+
+export const caseOptions = ['confirmed', 'recovered', 'deaths'];
+
+// type Filters = GlobalFilters | FiltersForLiveData;
+
+const useCaseTypeSelection = (filterSetter: (filters: any) => void) => {
+  const handleCaseTypeSelecting = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    event.preventDefault();
+
+    const value = event.target.value as CaseType;
+
+    if (!caseOptions.includes(value)) {
+      throw new Error('Expected valid case option: ' + caseOptions);
+    }
+
+    filterSetter((filters: any) => ({ ...filters, typeOfCases: value }));
+  };
+
+  return handleCaseTypeSelecting;
+};
+export default useCaseTypeSelection;

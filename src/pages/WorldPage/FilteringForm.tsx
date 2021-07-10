@@ -1,5 +1,9 @@
 import React from 'react';
-import { CaseType, GlobalFilters } from '../../App';
+import { GlobalFilters } from '../../App';
+import useCaseTypeSelection, {
+  caseOptions,
+} from '../../hooks/events/useCaseTypeSelection';
+import useDateSelection from '../../hooks/events/useDateSelection';
 import { getTodayDate, getNextDay } from '../../utils/dates';
 
 interface Props {
@@ -11,30 +15,9 @@ const FilteringForm = ({ globalFilters, setGlobalFilters }: Props) => {
   const today = getTodayDate();
   const tomorrow = getNextDay();
 
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name: fieldName, value } = event.target;
+  const handleDateChange = useDateSelection(setGlobalFilters);
 
-    setGlobalFilters({
-      ...globalFilters,
-      [fieldName]: value,
-    });
-  };
-
-  const caseOptions = ['confirmed', 'recovered', 'deaths'];
-
-  const handleCaseTypeSelect = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    event.preventDefault();
-
-    const value = event.target.value as CaseType;
-
-    if (!caseOptions.includes(value)) {
-      throw new Error('Expected valid case option: ' + caseOptions);
-    }
-
-    setGlobalFilters({ ...globalFilters, typeOfCases: value });
-  };
+  const handleCaseTypeSelect = useCaseTypeSelection(setGlobalFilters);
 
   return (
     <form>
