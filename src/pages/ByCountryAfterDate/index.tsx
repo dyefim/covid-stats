@@ -14,7 +14,7 @@ import {
 import toTitleCase from '../../utils/toTitleCase';
 import { prepareStateForChart } from '../../utils/stateMutations';
 
-interface DataByCountry {
+export interface DataByCountry {
   Date: string;
   Active: number;
   City: string;
@@ -34,14 +34,14 @@ interface Props {
   data: {
     [c: string]: DataByCountry[];
   };
-  countries: string[];
+  countryFilters: string[];
   filtersByCountry: FiltersByCountry;
   setFiltersByCountry: React.Dispatch<React.SetStateAction<FiltersByCountry>>;
 }
 
 const ByCountryAfterDate = ({
   data,
-  countries,
+  countryFilters,
   filtersByCountry,
   setFiltersByCountry,
 }: Props) => {

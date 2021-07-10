@@ -12,7 +12,7 @@ import {
 } from 'recharts';
 import { getYyyyMmDd } from '../../utils/dates';
 
-interface Props {
+export interface WorldProps {
   data: {
     Date: string;
     NewConfirmed: number;
@@ -26,7 +26,7 @@ interface Props {
   setGlobalFilters: React.Dispatch<React.SetStateAction<Filters>>;
 }
 
-const World = ({ data, globalFilters, setGlobalFilters }: Props) => {
+const World = ({ data, globalFilters, setGlobalFilters }: WorldProps) => {
   const caseType = globalFilters.cases;
 
   const preparedData = data.map((d) => ({

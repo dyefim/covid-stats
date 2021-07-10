@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Navigation from './Navigation';
-import About from './pages/About';
-import ByCountryAfterDate from './pages/ByCountryAfterDate';
-import World from './pages/WorldPage';
 import makeRequest from './utils/makeRequest';
 import { appendToState } from './utils/stateMutations';
 import { getTodayDate, jumpDays } from './utils/dates';
+import Routes from './pages/Routes';
 
 export type Cases = 'confirmed' | 'recovered' | 'deaths';
 
@@ -39,7 +37,7 @@ const App = () => {
     cases: 'confirmed',
   });
 
-  const [countries, setCountries] = useState(['ukraine', 'russia']);
+  const [countryFilters, setCountryFilters] = useState(['ukraine', 'russia']);
 
   const [globalData, setGlobalData] = useState([]);
   const [countriesDataByDate, setCountriesDataByDate] = useState({});
@@ -67,12 +65,12 @@ const App = () => {
 
     setCountriesDataByDate({});
 
-    countries.forEach(async (country) => {
+    countryFilters.forEach(async (country) => {
       const response = await getDataByCounry(country);
 
       setCountriesDataByDate((state) => appendToState(state, response));
     });
-  }, [countries, filtersByCountry.cases, filtersByCountry.date_from]);
+  }, [countryFilters, filtersByCountry.cases, filtersByCountry.date_from]);
 
   return (
     <div className="App">
@@ -83,26 +81,15 @@ const App = () => {
 
           <hr />
 
-          <Switch>
-            <Route exact path="/">
-              <World
-                data={globalData}
-                globalFilters={globalFilters}
-                setGlobalFilters={setGlobalFilters}
-              />
-            </Route>
-            <Route path="/by-country-after-date">
-              <ByCountryAfterDate
-                data={countriesDataByDate}
-                countries={countries}
-                filtersByCountry={filtersByCountry}
-                setFiltersByCountry={setFiltersByCountry}
-              />
-            </Route>
-            <Route path="/about">
-              <About />
-            </Route>
-          </Switch>
+          <Routes
+            globalData={globalData}
+            globalFilters={globalFilters}
+            setGlobalFilters={setGlobalFilters}
+            countryFilters={countryFilters}
+            countriesDataByDate={countriesDataByDate}
+            filtersByCountry={filtersByCountry}
+            setFiltersByCountry={setFiltersByCountry}
+          />
         </div>
       </Router>
     </div>
