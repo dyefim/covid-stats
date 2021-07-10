@@ -2,12 +2,12 @@ import { Switch, Route } from 'react-router-dom';
 import About from './About';
 import ByCountryAfterDate, { DataByCountry } from './ByCountryAfterDate';
 import World, { WorldProps } from './WorldPage';
-import { Country, Filters, FiltersForLiveData } from '../App';
+import { Country, GlobalFilters, FiltersForLiveData } from '../App';
 
 interface Props {
   globalData: WorldProps['data'];
-  globalFilters: Filters;
-  setGlobalFilters: React.Dispatch<React.SetStateAction<Filters>>;
+  globalFilters: GlobalFilters;
+  setGlobalFilters: React.Dispatch<React.SetStateAction<GlobalFilters>>;
   countries: Country[];
   selectedCountries: string[];
   setSelectedCountries: React.Dispatch<React.SetStateAction<string[]>>;

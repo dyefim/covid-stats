@@ -60,7 +60,7 @@ const ByCountryAfterDate = ({
   filtersForLiveData,
   setFiltersForLiveData,
 }: Props) => {
-  const caseType = toTitleCase(filtersForLiveData.cases);
+  const caseType = toTitleCase(filtersForLiveData.typeOfCases);
 
   const preparedData = prepareStateForChart(data as any);
 

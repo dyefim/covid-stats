@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cases as CasesType, Country, FiltersForLiveData } from '../../App';
+import { CaseType, Country, FiltersForLiveData } from '../../App';
 import { getNextDay } from '../../utils/dates';
 
 interface Props {
@@ -37,13 +37,13 @@ const FilteringForm = ({
   ) => {
     event.preventDefault();
 
-    const value = event.target.value as CasesType;
+    const value = event.target.value as CaseType;
 
     if (!caseOptions.includes(value)) {
       throw new Error('Expected valid case option: ' + caseOptions);
     }
 
-    setFiltersForLiveData({ ...filtersForLiveData, cases: value });
+    setFiltersForLiveData({ ...filtersForLiveData, typeOfCases: value });
   };
 
   const handleCountriesSelection = (
@@ -87,7 +87,7 @@ const FilteringForm = ({
         <select
           name="cases"
           id="cases"
-          value={filtersForLiveData.cases}
+          value={filtersForLiveData.typeOfCases}
           onChange={handleCaseTypeSelection}
         >
           {caseOptions.map((option) => (

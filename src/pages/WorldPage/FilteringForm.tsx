@@ -1,10 +1,10 @@
 import React from 'react';
-import { Cases as CasesType, Filters } from '../../App';
+import { CaseType, GlobalFilters } from '../../App';
 import { getTodayDate, getNextDay } from '../../utils/dates';
 
 interface Props {
-  globalFilters: Filters;
-  setGlobalFilters: React.Dispatch<React.SetStateAction<Filters>>;
+  globalFilters: GlobalFilters;
+  setGlobalFilters: React.Dispatch<React.SetStateAction<GlobalFilters>>;
 }
 
 const FilteringForm = ({ globalFilters, setGlobalFilters }: Props) => {
@@ -22,16 +22,18 @@ const FilteringForm = ({ globalFilters, setGlobalFilters }: Props) => {
 
   const caseOptions = ['confirmed', 'recovered', 'deaths'];
 
-  const handleCaseTypeSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleCaseTypeSelect = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     event.preventDefault();
 
-    const value = event.target.value as CasesType;
+    const value = event.target.value as CaseType;
 
     if (!caseOptions.includes(value)) {
       throw new Error('Expected valid case option: ' + caseOptions);
     }
 
-    setGlobalFilters({ ...globalFilters, cases: value });
+    setGlobalFilters({ ...globalFilters, typeOfCases: value });
   };
 
   return (
@@ -62,11 +64,11 @@ const FilteringForm = ({ globalFilters, setGlobalFilters }: Props) => {
         />
       </label>
       <label htmlFor="cases">
-        Cases
+        CaseType
         <select
           name="cases"
           id="cases"
-          value={globalFilters.cases}
+          value={globalFilters.typeOfCases}
           onChange={handleCaseTypeSelect}
         >
           {caseOptions.map((option) => (

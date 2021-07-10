@@ -1,4 +1,4 @@
-import makeRequest from '../utils/makeRequest';
+import makeRequest from '../services/makeRequest';
 
 it('request data for one month', async () => {
   const allLiveCasesFor31Days =

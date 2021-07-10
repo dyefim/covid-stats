@@ -1,5 +1,5 @@
 import React from 'react';
-import { Filters } from '../../App';
+import { GlobalFilters } from '../../App';
 import FilteringForm from './FilteringForm';
 import {
   LineChart,
@@ -22,12 +22,12 @@ export interface WorldProps {
     TotalDeaths: number;
     TotalRecovered: number;
   }[];
-  globalFilters: Filters;
-  setGlobalFilters: React.Dispatch<React.SetStateAction<Filters>>;
+  globalFilters: GlobalFilters;
+  setGlobalFilters: React.Dispatch<React.SetStateAction<GlobalFilters>>;
 }
 
 const World = ({ data, globalFilters, setGlobalFilters }: WorldProps) => {
-  const caseType = globalFilters.cases;
+  const caseType = globalFilters.typeOfCases;
 
   const preparedData = data.map((d) => ({
     date: getYyyyMmDd(d.Date),
