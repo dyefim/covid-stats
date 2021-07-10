@@ -5,18 +5,21 @@ import About from './pages/About';
 import ByCountryAfterDate from './pages/ByCountryAfterDate';
 import World from './pages/WorldPage';
 import makeRequest from './utils/makeRequest';
-import { getTodayDate, getYesterday, jumpDays } from './utils/dates';
+import { appendToState } from './utils/stateMutations';
+import { getTodayDate, jumpDays } from './utils/dates';
+
+export type Cases = 'confirmed' | 'recovered' | 'deaths';
 
 export interface Filters {
   date_from: string;
   date_to: string;
-  cases: 'confirmed' | 'recovered' | 'deaths';
+  cases: Cases;
 }
 
 export interface FiltersByCountry {
   date_from: string;
-  country: string;
-  cases: 'confirmed' | 'recovered' | 'deaths';
+  // country: string;
+  cases: Cases;
 }
 
 const baseUrl = 'https://api.covid19api.com';
@@ -31,26 +34,18 @@ const App = () => {
   });
 
   const [filtersByCountry, setFiltersByCountry] = useState<FiltersByCountry>({
-    date_from: getYesterday(),
-    country: 'ukraine',
+    date_from: jumpDays(today, -7),
+    // country: 'ukraine',
     cases: 'confirmed',
   });
 
+  const [countries, setCountries] = useState(['ukraine', 'russia']);
+
   const [globalData, setGlobalData] = useState([]);
-  const [countryData, setCountryData] = useState([]);
+  const [countriesDataByDate, setCountriesDataByDate] = useState({});
 
   useEffect(() => {
-    const getData = async () => {
-      // if (globalFilters.date_from > globalFilters.date_to) {
-      //   alert('Please, enter valid date range!');
-
-      //   setGlobalFilters({
-      //     ...globalFilters,
-      //     date_to: getNextDay(globalFilters.date_from),
-      //   });
-      //   return;
-      // }
-
+    const getGlobalData = async () => {
       const responseData = await makeRequest(
         `${baseUrl}/world?from=${globalFilters.date_from}&to=${globalFilters.date_to}`
       );
@@ -58,22 +53,26 @@ const App = () => {
       setGlobalData(responseData);
     };
 
-    getData();
+    getGlobalData();
   }, [globalFilters]);
 
   useEffect(() => {
-    const getData = async () => {
+    const getDataByCounry = async (country: string) => {
       const responseData = await makeRequest(
-        `${baseUrl}/live/country/${filtersByCountry.country}/status/${filtersByCountry.cases}/date/${filtersByCountry.date_from}`
+        `${baseUrl}/live/country/${country}/status/${filtersByCountry.cases}/date/${filtersByCountry.date_from}`
       );
 
-      console.log(responseData);
-
-      setCountryData(responseData);
+      return responseData;
     };
 
-    getData();
-  }, [filtersByCountry]);
+    setCountriesDataByDate({});
+
+    countries.forEach(async (country) => {
+      const response = await getDataByCounry(country);
+
+      setCountriesDataByDate((state) => appendToState(state, response));
+    });
+  }, [countries, filtersByCountry.cases, filtersByCountry.date_from]);
 
   return (
     <div className="App">
@@ -94,7 +93,8 @@ const App = () => {
             </Route>
             <Route path="/by-country-after-date">
               <ByCountryAfterDate
-                data={countryData}
+                data={countriesDataByDate}
+                countries={countries}
                 filtersByCountry={filtersByCountry}
                 setFiltersByCountry={setFiltersByCountry}
               />

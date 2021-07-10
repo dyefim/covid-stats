@@ -49,8 +49,8 @@ const World = ({ data, globalFilters, setGlobalFilters }: Props) => {
       <div style={{ width: '100%', maxWidth: 800, height: 300 }}>
         <ResponsiveContainer>
           <LineChart
-            width={500}
-            height={400}
+            // width={500}
+            // height={400}
             data={preparedData}
             margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
           >

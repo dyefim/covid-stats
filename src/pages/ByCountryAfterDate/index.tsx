@@ -1,6 +1,6 @@
 import React from 'react';
 import { FiltersByCountry } from '../../App';
-// import FilteringForm from './FilteringForm';
+import FilteringForm from './FilteringForm';
 import {
   BarChart,
   Bar,
@@ -11,69 +11,91 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { getYyyyMmDd } from '../../utils/dates';
+import toTitleCase from '../../utils/toTitleCase';
+import { prepareStateForChart } from '../../utils/stateMutations';
+
+interface DataByCountry {
+  Date: string;
+  Active: number;
+  City: string;
+  CityCode: string;
+  Confirmed: number;
+  Country: string;
+  CountryCode: Uppercase<string>;
+  Deaths: number;
+  ID: string;
+  Lat: string;
+  Lon: string;
+  Province: string;
+  Recovered: number;
+}
 
 interface Props {
   data: {
-    Date: string;
-    Active: number;
-    City: string;
-    CityCode: string;
-    Confirmed: number;
-    Country: string;
-    CountryCode: Uppercase<string>;
-    Deaths: number;
-    ID: string;
-    Lat: string;
-    Lon: string;
-    Province: string;
-    Recovered: number;
-  }[];
+    [c: string]: DataByCountry[];
+  };
+  countries: string[];
   filtersByCountry: FiltersByCountry;
   setFiltersByCountry: React.Dispatch<React.SetStateAction<FiltersByCountry>>;
 }
 
 const ByCountryAfterDate = ({
   data,
+  countries,
   filtersByCountry,
   setFiltersByCountry,
 }: Props) => {
-  const caseType = filtersByCountry.cases;
+  const caseType = toTitleCase(filtersByCountry.cases);
 
-  const preparedData = data.map((d) => ({
-    date: getYyyyMmDd(d.Date),
-    province: d.Province,
-    confirmed: d.Confirmed,
-    deaths: d.Deaths,
-    recovered: d.Recovered,
-  }));
+  const preparedData = prepareStateForChart(data as any);
+
+  console.log(preparedData);
 
   return (
     <div>
       <h1>Live By Country And Status After Date</h1>
 
+      <FilteringForm
+        filtersByCountry={filtersByCountry}
+        setFiltersByCountry={setFiltersByCountry}
+      />
       <div style={{ width: '100%', maxWidth: 800, height: 300 }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
-            width={500}
-            height={300}
+            // width={500}
+            // height={300}
             data={preparedData}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
+            margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="province" hide />
+            <CartesianGrid strokeDasharray="4 3" />
+            <XAxis dataKey="date" hide />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey={caseType} fill="#8884d8" />
+            <Bar
+              dataKey={`Ukraine.${caseType}`}
+              name="Ukraine"
+              fill="#8884d8"
+            />
+            <Bar
+              dataKey={`Russian Federation.${caseType}`}
+              name="Russia"
+              fill="#88d884"
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>
+
+      {/* <ul>
+        {caseType}
+        {preparedData.map((report, i) => {
+          const numberofCases = report[caseType];
+
+          return (
+            <li key={`${numberofCases}_${caseType}_${i}`}>{numberofCases}</li>
+          );
+        })}
+      </ul> */}
     </div>
   );
 };

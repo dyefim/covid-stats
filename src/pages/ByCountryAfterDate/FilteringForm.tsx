@@ -1,21 +1,20 @@
 import React from 'react';
-import { Cases as CasesType, Filters } from '../../App';
-import { getTodayDate, getNextDay } from '../../utils/dates';
+import { Cases as CasesType, FiltersByCountry } from '../../App';
+import { getNextDay } from '../../utils/dates';
 
 interface Props {
-  globalFilters: Filters;
-  setGlobalFilters: React.Dispatch<React.SetStateAction<Filters>>;
+  filtersByCountry: FiltersByCountry;
+  setFiltersByCountry: React.Dispatch<React.SetStateAction<FiltersByCountry>>;
 }
 
-const FilteringForm = ({ globalFilters, setGlobalFilters }: Props) => {
-  const today = getTodayDate();
+const FilteringForm = ({ filtersByCountry, setFiltersByCountry }: Props) => {
   const tomorrow = getNextDay();
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name: fieldName, value } = event.target;
 
-    setGlobalFilters({
-      ...globalFilters,
+    setFiltersByCountry({
+      ...filtersByCountry,
       [fieldName]: value,
     });
   };
@@ -31,7 +30,7 @@ const FilteringForm = ({ globalFilters, setGlobalFilters }: Props) => {
       throw new Error('Expected valid case option: ' + caseOptions);
     }
 
-    setGlobalFilters({ ...globalFilters, cases: value });
+    setFiltersByCountry({ ...filtersByCountry, cases: value });
   };
 
   return (
@@ -44,29 +43,18 @@ const FilteringForm = ({ globalFilters, setGlobalFilters }: Props) => {
           name="date_from"
           id="date_from"
           min="2019-01-01"
-          max={today}
-          value={globalFilters.date_from}
-          onChange={handleDateChange}
-        />
-      </label>
-      <label htmlFor="date_to">
-        To
-        <input
-          type="date"
-          name="date_to"
-          id="date_to"
-          min="2019-01-01"
           max={tomorrow}
-          value={globalFilters.date_to}
+          value={filtersByCountry.date_from}
           onChange={handleDateChange}
         />
       </label>
+    
       <label htmlFor="cases">
         Cases
         <select
           name="cases"
           id="cases"
-          value={globalFilters.cases}
+          value={filtersByCountry.cases}
           onChange={handleCaseTypeSelect}
         >
           {caseOptions.map((option) => (
