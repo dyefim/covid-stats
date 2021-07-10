@@ -4,6 +4,7 @@ import Navigation from './Navigation';
 import makeRequest from './utils/makeRequest';
 import { appendToState } from './utils/stateMutations';
 import { getTodayDate, jumpDays } from './utils/dates';
+import { getLocalState, saveToLocalState } from './utils/localStorage';
 import Routes from './pages/Routes';
 
 export type Cases = 'confirmed' | 'recovered' | 'deaths';
@@ -14,10 +15,16 @@ export interface Filters {
   cases: Cases;
 }
 
-export interface FiltersByCountry {
+export interface FiltersForLiveData {
   date_from: string;
   // country: string;
   cases: Cases;
+}
+
+export interface Country {
+  Country: string;
+  Slug: string;
+  ISO2: string;
 }
 
 const baseUrl = 'https://api.covid19api.com';
@@ -31,13 +38,32 @@ const App = () => {
     cases: 'confirmed', // TODO extract to own useState
   });
 
-  const [filtersByCountry, setFiltersByCountry] = useState<FiltersByCountry>({
-    date_from: jumpDays(today, -7),
-    // country: 'ukraine',
-    cases: 'confirmed',
-  });
+  const [filtersForLiveData, setFiltersForLiveData] =
+    useState<FiltersForLiveData>({
+      date_from: jumpDays(today, -7),
+      // country: 'ukraine',
+      cases: 'confirmed',
+    });
 
-  const [countryFilters, setCountryFilters] = useState(['ukraine', 'russia']);
+  const [countries, setCountries] = useState<Country[]>([]);
+
+  useEffect(() => {
+    const getCountriesList = async () => {
+      const responseData = await makeRequest(`${baseUrl}/countries`);
+
+      setCountries(responseData);
+    };
+
+    getCountriesList();
+  }, []);
+
+  const [selectedCountries, setSelectedCountries] = useState<string[]>(
+    () => getLocalState('selectedCountries') || ['ukraine', 'russia']
+  );
+
+  useEffect(() => {
+    saveToLocalState('selectedCountries', selectedCountries);
+  }, [selectedCountries]);
 
   const [globalData, setGlobalData] = useState([]);
   const [countriesDataByDate, setCountriesDataByDate] = useState({});
@@ -57,7 +83,7 @@ const App = () => {
   useEffect(() => {
     const getDataByCounry = async (country: string) => {
       const responseData = await makeRequest(
-        `${baseUrl}/live/country/${country}/status/${filtersByCountry.cases}/date/${filtersByCountry.date_from}`
+        `${baseUrl}/live/country/${country}/status/${filtersForLiveData.cases}/date/${filtersForLiveData.date_from}`
       );
 
       return responseData;
@@ -65,12 +91,16 @@ const App = () => {
 
     setCountriesDataByDate({});
 
-    countryFilters.forEach(async (country) => {
+    selectedCountries.forEach(async (country) => {
       const response = await getDataByCounry(country);
 
       setCountriesDataByDate((state) => appendToState(state, response));
     });
-  }, [countryFilters, filtersByCountry.cases, filtersByCountry.date_from]);
+  }, [
+    selectedCountries,
+    filtersForLiveData.cases,
+    filtersForLiveData.date_from,
+  ]);
 
   return (
     <div className="App">
@@ -85,10 +115,12 @@ const App = () => {
             globalData={globalData}
             globalFilters={globalFilters}
             setGlobalFilters={setGlobalFilters}
-            countryFilters={countryFilters}
+            countries={countries}
+            selectedCountries={selectedCountries}
+            setSelectedCountries={setSelectedCountries}
             countriesDataByDate={countriesDataByDate}
-            filtersByCountry={filtersByCountry}
-            setFiltersByCountry={setFiltersByCountry}
+            filtersForLiveData={filtersForLiveData}
+            setFiltersForLiveData={setFiltersForLiveData}
           />
         </div>
       </Router>

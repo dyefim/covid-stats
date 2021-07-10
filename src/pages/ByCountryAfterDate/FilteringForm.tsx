@@ -1,27 +1,40 @@
 import React from 'react';
-import { Cases as CasesType, FiltersByCountry } from '../../App';
+import { Cases as CasesType, Country, FiltersForLiveData } from '../../App';
 import { getNextDay } from '../../utils/dates';
 
 interface Props {
-  filtersByCountry: FiltersByCountry;
-  setFiltersByCountry: React.Dispatch<React.SetStateAction<FiltersByCountry>>;
+  filtersForLiveData: FiltersForLiveData;
+  setFiltersForLiveData: React.Dispatch<
+    React.SetStateAction<FiltersForLiveData>
+  >;
+  countries: Country[];
+  selectedCountries: string[];
+  setSelectedCountries: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const FilteringForm = ({ filtersByCountry, setFiltersByCountry }: Props) => {
+const FilteringForm = ({
+  filtersForLiveData,
+  setFiltersForLiveData,
+  countries,
+  selectedCountries,
+  setSelectedCountries,
+}: Props) => {
   const tomorrow = getNextDay();
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name: fieldName, value } = event.target;
 
-    setFiltersByCountry({
-      ...filtersByCountry,
+    setFiltersForLiveData({
+      ...filtersForLiveData,
       [fieldName]: value,
     });
   };
 
   const caseOptions = ['confirmed', 'recovered', 'deaths'];
 
-  const handleCaseTypeSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleCaseTypeSelection = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     event.preventDefault();
 
     const value = event.target.value as CasesType;
@@ -30,12 +43,32 @@ const FilteringForm = ({ filtersByCountry, setFiltersByCountry }: Props) => {
       throw new Error('Expected valid case option: ' + caseOptions);
     }
 
-    setFiltersByCountry({ ...filtersByCountry, cases: value });
+    setFiltersForLiveData({ ...filtersForLiveData, cases: value });
   };
+
+  const handleCountriesSelection = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    event.preventDefault();
+
+    const selectedOptions = event.target.selectedOptions;
+
+    // FIXME restrict selecting to much or to often
+
+    const values = Array.from(selectedOptions, (item) => item.value);
+
+    // console.log(values);
+
+    setSelectedCountries(values);
+  };
+
+  const sortedCountries = countries.sort((a, b) =>
+    a.Slug.localeCompare(b.Slug)
+  );
 
   return (
     <form>
-      <legend>Pick date range</legend>
+      <legend>Pick countries and date</legend>
       <label htmlFor="date_from">
         From
         <input
@@ -44,22 +77,40 @@ const FilteringForm = ({ filtersByCountry, setFiltersByCountry }: Props) => {
           id="date_from"
           min="2019-01-01"
           max={tomorrow}
-          value={filtersByCountry.date_from}
+          value={filtersForLiveData.date_from}
           onChange={handleDateChange}
         />
       </label>
-    
+
       <label htmlFor="cases">
         Cases
         <select
           name="cases"
           id="cases"
-          value={filtersByCountry.cases}
-          onChange={handleCaseTypeSelect}
+          value={filtersForLiveData.cases}
+          onChange={handleCaseTypeSelection}
         >
           {caseOptions.map((option) => (
             <option key={option} value={option}>
               {option}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label htmlFor="countries">
+        Countries
+        <select
+          style={{ maxWidth: 250, height: 100 }}
+          name="countries"
+          id="countries"
+          value={selectedCountries}
+          onChange={handleCountriesSelection}
+          multiple
+        >
+          {sortedCountries.map(({ Country, Slug }) => (
+            <option key={Slug} value={Slug}>
+              {Country}
             </option>
           ))}
         </select>

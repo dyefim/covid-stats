@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiltersByCountry } from '../../App';
+import { Country, FiltersForLiveData } from '../../App';
 import FilteringForm from './FilteringForm';
 import {
   BarChart,
@@ -13,6 +13,15 @@ import {
 } from 'recharts';
 import toTitleCase from '../../utils/toTitleCase';
 import { prepareStateForChart } from '../../utils/stateMutations';
+
+const getRandomColor = () => {
+  var letters = '3456789ABC';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * letters.length)];
+  }
+  return color;
+};
 
 export interface DataByCountry {
   Date: string;
@@ -34,45 +43,71 @@ interface Props {
   data: {
     [c: string]: DataByCountry[];
   };
-  countryFilters: string[];
-  filtersByCountry: FiltersByCountry;
-  setFiltersByCountry: React.Dispatch<React.SetStateAction<FiltersByCountry>>;
+  countries: Country[];
+  selectedCountries: string[];
+  setSelectedCountries: React.Dispatch<React.SetStateAction<string[]>>;
+  filtersForLiveData: FiltersForLiveData;
+  setFiltersForLiveData: React.Dispatch<
+    React.SetStateAction<FiltersForLiveData>
+  >;
 }
 
 const ByCountryAfterDate = ({
   data,
-  countryFilters,
-  filtersByCountry,
-  setFiltersByCountry,
+  countries,
+  selectedCountries,
+  setSelectedCountries,
+  filtersForLiveData,
+  setFiltersForLiveData,
 }: Props) => {
-  const caseType = toTitleCase(filtersByCountry.cases);
+  const caseType = toTitleCase(filtersForLiveData.cases);
 
   const preparedData = prepareStateForChart(data as any);
 
-  console.log(preparedData);
+  const getCountryDetails = (slug: string) => {
+    return countries.find((c) => c.Slug === slug);
+  };
 
   return (
     <div>
       <h1>Live By Country And Status After Date</h1>
 
       <FilteringForm
-        filtersByCountry={filtersByCountry}
-        setFiltersByCountry={setFiltersByCountry}
+        filtersForLiveData={filtersForLiveData}
+        setFiltersForLiveData={setFiltersForLiveData}
+        countries={countries}
+        selectedCountries={selectedCountries}
+        setSelectedCountries={setSelectedCountries}
       />
       <div style={{ width: '100%', maxWidth: 800, height: 300 }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
-            // width={500}
-            // height={300}
             data={preparedData}
-            margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+            margin={{ top: 10, right: 10, bottom: 10, left: 20 }}
           >
             <CartesianGrid strokeDasharray="4 3" />
             <XAxis dataKey="date" hide />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar
+
+            {selectedCountries.map((slug) => {
+              const details = getCountryDetails(slug);
+
+              if (typeof details === 'undefined') return null;
+
+              const key = `${details.Country}.${caseType}`;
+
+              return (
+                <Bar
+                  key={key}
+                  dataKey={key}
+                  name={details.Country}
+                  fill={getRandomColor()}
+                />
+              );
+            })}
+            {/* <Bar
               dataKey={`Ukraine.${caseType}`}
               name="Ukraine"
               fill="#8884d8"
@@ -81,21 +116,10 @@ const ByCountryAfterDate = ({
               dataKey={`Russian Federation.${caseType}`}
               name="Russia"
               fill="#88d884"
-            />
+            /> */}
           </BarChart>
         </ResponsiveContainer>
       </div>
-
-      {/* <ul>
-        {caseType}
-        {preparedData.map((report, i) => {
-          const numberofCases = report[caseType];
-
-          return (
-            <li key={`${numberofCases}_${caseType}_${i}`}>{numberofCases}</li>
-          );
-        })}
-      </ul> */}
     </div>
   );
 };

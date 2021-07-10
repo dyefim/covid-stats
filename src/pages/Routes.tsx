@@ -2,29 +2,34 @@ import { Switch, Route } from 'react-router-dom';
 import About from './About';
 import ByCountryAfterDate, { DataByCountry } from './ByCountryAfterDate';
 import World, { WorldProps } from './WorldPage';
-
-import { Filters, FiltersByCountry } from '../App';
+import { Country, Filters, FiltersForLiveData } from '../App';
 
 interface Props {
   globalData: WorldProps['data'];
   globalFilters: Filters;
   setGlobalFilters: React.Dispatch<React.SetStateAction<Filters>>;
-  countryFilters: string[];
+  countries: Country[];
+  selectedCountries: string[];
+  setSelectedCountries: React.Dispatch<React.SetStateAction<string[]>>;
   countriesDataByDate: {
     [c: string]: DataByCountry[];
   };
-  filtersByCountry: FiltersByCountry;
-  setFiltersByCountry: React.Dispatch<React.SetStateAction<FiltersByCountry>>;
+  filtersForLiveData: FiltersForLiveData;
+  setFiltersForLiveData: React.Dispatch<
+    React.SetStateAction<FiltersForLiveData>
+  >;
 }
 
 const Routes = ({
   globalData,
   globalFilters,
   setGlobalFilters,
-  countryFilters,
+  countries,
+  selectedCountries,
+  setSelectedCountries,
   countriesDataByDate,
-  filtersByCountry,
-  setFiltersByCountry,
+  filtersForLiveData,
+  setFiltersForLiveData,
 }: Props) => {
   return (
     <Switch>
@@ -38,9 +43,11 @@ const Routes = ({
       <Route path="/by-country-after-date">
         <ByCountryAfterDate
           data={countriesDataByDate}
-          countryFilters={countryFilters}
-          filtersByCountry={filtersByCountry}
-          setFiltersByCountry={setFiltersByCountry}
+          countries={countries}
+          selectedCountries={selectedCountries}
+          setSelectedCountries={setSelectedCountries}
+          filtersForLiveData={filtersForLiveData}
+          setFiltersForLiveData={setFiltersForLiveData}
         />
       </Route>
       <Route path="/about">
