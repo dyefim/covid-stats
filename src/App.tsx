@@ -59,7 +59,7 @@ const App = () => {
 
   return (
     <Container maxWidth="sm">
-      <header>СOVID Stats</header>
+      {/* <header>СOVID Stats</header> */}
       <Router>
         <div>
           <Routes

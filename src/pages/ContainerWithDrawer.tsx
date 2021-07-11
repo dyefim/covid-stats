@@ -1,6 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
 import { useTheme } from '@material-ui/core/styles';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -78,6 +80,10 @@ const ContainerWithDrawer = ({
         </div>
         <Divider />
         {drawerContent}
+
+        <Link className={classes.aboutLink} component={RouterLink} to="/about">
+          About
+        </Link>
       </Drawer>
       <main
         className={clsx(classes.content, {
