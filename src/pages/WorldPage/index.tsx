@@ -1,4 +1,3 @@
-import Typography from '@material-ui/core/Typography';
 import { GlobalFilters } from '../../App';
 import FilteringForm from './FilteringForm';
 import {
@@ -11,6 +10,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { getYyyyMmDd } from '../../utils/dates';
+import ContainerWithDrawer from '../ContainerWithDrawer';
 
 export type GlobalData = {
   Date: string;
@@ -38,18 +38,16 @@ const World = ({ data, globalFilters, setGlobalFilters }: WorldProps) => {
     recovered: d.NewRecovered,
   }));
 
-  // console.log(preparedData);
-
   return (
-    <div>
-      <Typography variant="h5" component="h1" gutterBottom>
-        Global data
-      </Typography>
-      <FilteringForm
-        globalFilters={globalFilters}
-        setGlobalFilters={setGlobalFilters}
-      />
-
+    <ContainerWithDrawer
+      title="Global data"
+      drawerContent={
+        <FilteringForm
+          globalFilters={globalFilters}
+          setGlobalFilters={setGlobalFilters}
+        />
+      }
+    >
       <div style={{ width: '100%', maxWidth: 800, height: 300 }}>
         <ResponsiveContainer>
           <LineChart
@@ -76,18 +74,7 @@ const World = ({ data, globalFilters, setGlobalFilters }: WorldProps) => {
           </LineChart>
         </ResponsiveContainer>
       </div>
-
-      <ul>
-        {caseType}
-        {preparedData.map((report, i) => {
-          const numberofCases = report[caseType];
-
-          return (
-            <li key={`${numberofCases}_${caseType}_${i}`}>{numberofCases}</li>
-          );
-        })}
-      </ul>
-    </div>
+    </ContainerWithDrawer>
   );
 };
 

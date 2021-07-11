@@ -1,10 +1,15 @@
-import React from 'react';
+import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 import { GlobalFilters } from '../../App';
 import useCaseTypeSelection, {
   caseOptions,
 } from '../../hooks/events/useCaseTypeSelection';
 import useDateSelection from '../../hooks/events/useDateSelection';
 import { getTodayDate, getNextDay } from '../../utils/dates';
+import useStyles from '../../styles/DrawerFormStyles';
 
 interface Props {
   globalFilters: GlobalFilters;
@@ -12,56 +17,78 @@ interface Props {
 }
 
 const FilteringForm = ({ globalFilters, setGlobalFilters }: Props) => {
+  const classes = useStyles();
+
   const today = getTodayDate();
   const tomorrow = getNextDay();
 
   const handleDateChange = useDateSelection(setGlobalFilters);
 
-  const handleCaseTypeSelect = useCaseTypeSelection(setGlobalFilters);
+  const handleCaseTypeSelection = useCaseTypeSelection(setGlobalFilters);
 
   return (
-    <form>
-      <legend>Pick date range</legend>
-      <label htmlFor="date_from">
-        From
-        <input
-          type="date"
-          name="date_from"
-          id="date_from"
-          min="2019-01-01"
-          max={today}
-          value={globalFilters.date_from}
-          onChange={handleDateChange}
-        />
-      </label>
-      <label htmlFor="date_to">
-        To
-        <input
-          type="date"
-          name="date_to"
-          id="date_to"
-          min="2019-01-01"
-          max={tomorrow}
-          value={globalFilters.date_to}
-          onChange={handleDateChange}
-        />
-      </label>
-      <label htmlFor="cases">
-        CaseType
-        <select
-          name="cases"
-          id="cases"
-          value={globalFilters.typeOfCases}
-          onChange={handleCaseTypeSelect}
-        >
-          {caseOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      </label>
-    </form>
+    <div className={classes.root}>
+      <Grid container className={classes.form}>
+        <Typography component="legend" className={classes.legend}>
+          Pick Date range and Case
+        </Typography>
+
+        <FormControl className={classes.input}>
+          <TextField
+            fullWidth
+            type="date"
+            name="date_from"
+            id="date_from"
+            label="From"
+            inputProps={{
+              min: '2019-01-01',
+              max: today,
+            }}
+            value={globalFilters.date_from}
+            onChange={handleDateChange}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </FormControl>
+
+        <FormControl className={classes.input}>
+          <TextField
+            fullWidth
+            type="date"
+            name="date_to"
+            id="date_to"
+            label="To"
+            inputProps={{
+              min: '2019-01-01',
+              max: tomorrow,
+            }}
+            value={globalFilters.date_to}
+            onChange={handleDateChange}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </FormControl>
+
+        <FormControl className={classes.input}>
+          <TextField
+            select
+            id="cases"
+            label="Cases"
+            value={globalFilters.typeOfCases}
+            onChange={handleCaseTypeSelection}
+            variant="standard"
+          >
+            {caseOptions.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+        </FormControl>
+      </Grid>
+    </div>
   );
 };
 

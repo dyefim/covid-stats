@@ -38,7 +38,7 @@ const Routes = ({
           setGlobalFilters={setGlobalFilters}
         />
       </Route>
-      <Route path="/by-country-after-date">
+      <Route path="/countries">
         <ByCountryAfterDate
           data={countriesDataByDate}
           countries={countries}

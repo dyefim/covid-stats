@@ -25,9 +25,9 @@ export interface FiltersForLiveData {
 
 export interface Countries {
   [slug: string]: {
-    Country: string,
-    ISO2: string
-  }
+    Country: string;
+    ISO2: string;
+  };
 }
 
 const App = () => {
@@ -37,7 +37,7 @@ const App = () => {
   const countries: Countries = collectionToObject(countriesCollection, 'Slug');
 
   const { selectedCountries, setSelectedCountries } = useSelectedCountries();
-  
+
   const [globalFilters, setGlobalFilters] = useState<GlobalFilters>({
     date_from: jumpDays(-7),
     date_to: today,
@@ -62,10 +62,6 @@ const App = () => {
       <header>СOVID Stats</header>
       <Router>
         <div>
-          <Navigation />
-
-          <hr />
-
           <Routes
             globalData={globalData}
             globalFilters={globalFilters}
@@ -78,6 +74,7 @@ const App = () => {
             setFiltersForLiveData={setFiltersForLiveData}
           />
         </div>
+        <Navigation />
       </Router>
     </Container>
   );

@@ -1,4 +1,3 @@
-import Typography from '@material-ui/core/Typography';
 import { Countries, FiltersForLiveData } from '../../App';
 import FilteringForm from './FilteringForm';
 import {
@@ -13,6 +12,7 @@ import {
 } from 'recharts';
 import toTitleCase from '../../utils/toTitleCase';
 import { prepareStateForChart } from '../../utils/stateMutations';
+import ContainerWithDrawer from '../ContainerWithDrawer';
 
 const getRandomColor = () => {
   var letters = '3456789ABC';
@@ -63,50 +63,49 @@ const ByCountryAfterDate = ({
   const preparedData = prepareStateForChart(data as any);
 
   return (
-    <div>
-      <Typography variant="h5" component="h1" gutterBottom>
-        Live By Country And Status After Date
-      </Typography>
+    <ContainerWithDrawer
+      title="By Country after Date"
+      drawerContent={
+        <FilteringForm
+          filtersForLiveData={filtersForLiveData}
+          setFiltersForLiveData={setFiltersForLiveData}
+          countries={countries}
+          selectedCountries={selectedCountries}
+          setSelectedCountries={setSelectedCountries}
+        />
+      }
+    >
+      <div>
+        <div style={{ width: '100%', maxWidth: 800, height: 300 }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={preparedData} margin={{ left: 20 }}>
+              <CartesianGrid strokeDasharray="4 3" />
+              <XAxis dataKey="date" hide />
+              <YAxis />
+              <Tooltip />
+              <Legend />
 
-      <FilteringForm
-        filtersForLiveData={filtersForLiveData}
-        setFiltersForLiveData={setFiltersForLiveData}
-        countries={countries}
-        selectedCountries={selectedCountries}
-        setSelectedCountries={setSelectedCountries}
-      />
-      <div style={{ width: '100%', maxWidth: 800, height: 300 }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={preparedData}
-            margin={{ top: 10, right: 10, bottom: 10, left: 20 }}
-          >
-            <CartesianGrid strokeDasharray="4 3" />
-            <XAxis dataKey="date" hide />
-            <YAxis />
-            <Tooltip />
-            <Legend />
+              {selectedCountries.map((slug) => {
+                const details = countries[slug];
 
-            {selectedCountries.map((slug) => {
-              const details = countries[slug];
+                if (typeof details === 'undefined') return null;
 
-              if (typeof details === 'undefined') return null;
+                const key = `${countries[slug].Country}.${caseType}`;
 
-              const key = `${countries[slug].Country}.${caseType}`;
-
-              return (
-                <Bar
-                  key={key}
-                  dataKey={key}
-                  name={details.Country}
-                  fill={getRandomColor()}
-                />
-              );
-            })}
-          </BarChart>
-        </ResponsiveContainer>
+                return (
+                  <Bar
+                    key={key}
+                    dataKey={key}
+                    name={details.Country}
+                    fill={getRandomColor()}
+                  />
+                );
+              })}
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
-    </div>
+    </ContainerWithDrawer>
   );
 };
 
