@@ -78,13 +78,11 @@ const ByCountryAfterDate = ({
       <div>
         <div style={{ width: '100%', maxWidth: 800, height: 300 }}>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={preparedData} margin={{ left: 20 }}>
+            <BarChart data={preparedData} margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
               <CartesianGrid strokeDasharray="4 3" />
               <XAxis dataKey="date" hide />
               <YAxis />
               <Tooltip />
-              <Legend />
-
               {selectedCountries.map((slug) => {
                 const details = countries[slug];
 
@@ -101,6 +99,7 @@ const ByCountryAfterDate = ({
                   />
                 );
               })}
+              <Legend />
             </BarChart>
           </ResponsiveContainer>
         </div>

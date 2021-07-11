@@ -57,13 +57,6 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginLeft: 0,
   },
-  aboutLink: {
-    position: 'absolute',
-    bottom: 10,
-    right: 20,
-    padding: 10,
-    fontSize: 24,
-  },
 }));
 
 export default useStyles;

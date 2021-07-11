@@ -14,13 +14,13 @@ const useStyles = makeStyles((theme) => ({
     color: '#777',
   },
   input: {
-    width: `calc(${drawerWidth}px - ${theme.spacing(2)}px)`,
-    margin: theme.spacing(0.5),
+    width: `calc(${drawerWidth}px - ${theme.spacing(1.5)}px)`,
+    margin: theme.spacing(2),
     marginBottom: '20px',
   },
   select: {
-    margin: theme.spacing(0.5),
-    width: `calc(${drawerWidth}px - ${theme.spacing(1.5)}px)`,
+    margin: theme.spacing(2),
+    width: `calc(${drawerWidth}px - ${theme.spacing(4)}px)`,
   },
 }));
 

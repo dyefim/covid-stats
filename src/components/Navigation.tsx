@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { useRouteMatch, useHistory } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Public from '@material-ui/icons/Public';
 import Flag from '@material-ui/icons/Flag';
+import Info from '@material-ui/icons/Info';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
@@ -18,15 +19,13 @@ const useStyles = makeStyles(() => ({
 const Navigation = () => {
   const history = useHistory();
 
-  const match = useRouteMatch({
-    path: '/countries',
-  });
+  const location = useLocation();
 
   const changeLocation = (path = '/') => {
     history.push(path);
   };
 
-  const [value, setValue] = useState(() => (match ? '/countries' : '/'));
+  const [value, setValue] = useState(() => location.pathname || '/');
 
   const handleChange = (event: any, newValue: string) => {
     setValue(newValue);
@@ -52,6 +51,12 @@ const Navigation = () => {
         value="/countries"
         label="Countries"
         icon={<Flag />}
+      />
+      <BottomNavigationAction
+        showLabel
+        value="/about"
+        label="About"
+        icon={<Info />}
       />
     </BottomNavigation>
   );
