@@ -3,7 +3,7 @@ import { drawerWidth } from './ContainerWithDrawerStyles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: theme.spacing(0.5),
+    // padding: theme.spacing(0.5),
   },
   form: {
     padding: theme.spacing(0.5),
