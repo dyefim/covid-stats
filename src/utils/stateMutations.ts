@@ -29,7 +29,9 @@ const appendToState = (
   let state = originalState;
 
   collectionsByCountry.forEach((collection) => {
-    const { Date, Country, Confirmed, Deaths, Recovered } = collection;
+    const { Date: date, Country, Confirmed, Deaths, Recovered } = collection;
+
+    const Date = date.replace(/T(.)+/, '');
 
     if (Date in state) {
       if (Country in state[Date]) {

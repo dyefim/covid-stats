@@ -71,7 +71,7 @@ const dataFromRussia = [
 ];
 
 const mutatedState = {
-  '2021-07-08T00:00:00Z': {
+  '2021-07-08': {
     Ukraine: {
       Confirmed: 10,
       Deaths: 7,
@@ -83,7 +83,7 @@ const mutatedState = {
       Recovered: 5,
     },
   },
-  '2021-07-09T00:00:00Z': {
+  '2021-07-09': {
     Ukraine: {
       Confirmed: 12,
       Deaths: 8,
@@ -99,7 +99,7 @@ const mutatedState = {
 
 const dataForChart = [
   {
-    date: '2021-07-08T00:00:00Z',
+    date: '2021-07-08',
     Ukraine: {
       Confirmed: 10,
       Deaths: 7,
@@ -112,7 +112,7 @@ const dataForChart = [
     },
   },
   {
-    date: '2021-07-09T00:00:00Z',
+    date: '2021-07-09',
     Ukraine: {
       Confirmed: 12,
       Deaths: 8,

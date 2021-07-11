@@ -16,8 +16,8 @@ interface Params {
 
 const requestCountryCases = ({
   country,
-  typeOfCases = 'confirmed',
   date_from,
+  typeOfCases = 'confirmed',
 }: Params) =>
   makeRequest(
     `${baseUrl}/live/country/${country}/status/${typeOfCases}/date/${date_from}`

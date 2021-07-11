@@ -15,12 +15,10 @@ export type CaseType = 'confirmed' | 'recovered' | 'deaths';
 export interface GlobalFilters {
   date_from: string;
   date_to: string;
-  typeOfCases: CaseType;
 }
 
 export interface FiltersForLiveData {
   date_from: string;
-  typeOfCases: CaseType;
 }
 
 export interface Countries {
@@ -41,31 +39,38 @@ const App = () => {
   const [globalFilters, setGlobalFilters] = useState<GlobalFilters>({
     date_from: jumpDays(-7),
     date_to: today,
-    typeOfCases: 'confirmed',
   });
+
+  const [typeOfCasesGlobal, setTypeOfCasesGlobal] =
+    useState<CaseType>('confirmed');
+
+  const [typeOfCasesByCountry, setTypeOfCasesByCountry] =
+    useState<CaseType>('confirmed');
 
   const [filtersForLiveData, setFiltersForLiveData] =
     useState<FiltersForLiveData>({
       date_from: jumpDays(-7),
-      typeOfCases: 'confirmed',
     });
 
   const globalData = useGlobalData(globalFilters);
 
   const countriesDataByDate = useCountriesData({
     selectedCountries,
-    filtersForLiveData,
+    filters: filtersForLiveData,
   });
 
   return (
-    <Container maxWidth="sm">
-      {/* <header>СOVID Stats</header> */}
+    <Container maxWidth="md">
       <Router>
         <div>
           <Routes
             globalData={globalData}
             globalFilters={globalFilters}
             setGlobalFilters={setGlobalFilters}
+            typeOfCasesGlobal={typeOfCasesGlobal}
+            setTypeOfCasesGlobal={setTypeOfCasesGlobal}
+            typeOfCasesByCountry={typeOfCasesByCountry}
+            setTypeOfCasesByCountry={setTypeOfCasesByCountry}
             countries={countries}
             selectedCountries={selectedCountries}
             setSelectedCountries={setSelectedCountries}

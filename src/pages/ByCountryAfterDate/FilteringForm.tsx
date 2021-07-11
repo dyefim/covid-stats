@@ -7,7 +7,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
-import { Countries, FiltersForLiveData } from '../../App';
+import { Countries, FiltersForLiveData, CaseType } from '../../App';
 import useCaseTypeSelection, {
   caseOptions,
 } from '../../hooks/events/useCaseTypeSelection';
@@ -23,6 +23,8 @@ interface Props {
   countries: Countries;
   selectedCountries: string[];
   setSelectedCountries: (countries: string[]) => void;
+  typeOfCasesByCountry: CaseType;
+  setTypeOfCasesByCountry: (caseType: CaseType) => void;
 }
 
 const FilteringForm = ({
@@ -31,6 +33,8 @@ const FilteringForm = ({
   countries,
   selectedCountries,
   setSelectedCountries,
+  typeOfCasesByCountry,
+  setTypeOfCasesByCountry,
 }: Props) => {
   const classes = useStyles();
 
@@ -38,7 +42,7 @@ const FilteringForm = ({
 
   const handleDateChange = useDateSelection(setFiltersForLiveData);
 
-  const handleCaseTypeSelection = useCaseTypeSelection(setFiltersForLiveData);
+  const handleCaseTypeSelection = useCaseTypeSelection(setTypeOfCasesByCountry);
 
   const handleCountriesSelection = (
     event: React.ChangeEvent<{ value: unknown }>
@@ -72,7 +76,7 @@ const FilteringForm = ({
           name="cases"
           label="Cases"
           options={caseOptions}
-          value={filtersForLiveData.typeOfCases}
+          value={typeOfCasesByCountry}
           handleSelection={handleCaseTypeSelection}
           className={classes.input}
         />

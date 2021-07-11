@@ -1,4 +1,4 @@
-import { Countries, FiltersForLiveData } from '../../App';
+import { CaseType, Countries, FiltersForLiveData } from '../../App';
 import FilteringForm from './FilteringForm';
 import {
   BarChart,
@@ -48,6 +48,8 @@ interface Props {
   setSelectedCountries: (countries: string[]) => void;
   filtersForLiveData: FiltersForLiveData;
   setFiltersForLiveData: (filters: FiltersForLiveData) => void;
+  typeOfCasesByCountry: CaseType;
+  setTypeOfCasesByCountry: (caseType: CaseType) => void;
 }
 
 const ByCountryAfterDate = ({
@@ -57,8 +59,10 @@ const ByCountryAfterDate = ({
   setSelectedCountries,
   filtersForLiveData,
   setFiltersForLiveData,
+  typeOfCasesByCountry,
+  setTypeOfCasesByCountry,
 }: Props) => {
-  const caseType = toTitleCase(filtersForLiveData.typeOfCases);
+  const caseType = toTitleCase(typeOfCasesByCountry);
 
   const preparedData = prepareStateForChart(data as any);
 
@@ -72,13 +76,18 @@ const ByCountryAfterDate = ({
           countries={countries}
           selectedCountries={selectedCountries}
           setSelectedCountries={setSelectedCountries}
+          typeOfCasesByCountry={typeOfCasesByCountry}
+          setTypeOfCasesByCountry={setTypeOfCasesByCountry}
         />
       }
     >
       <div>
         <div style={{ width: '100%', maxWidth: 800, height: 300 }}>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={preparedData} margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
+            <BarChart
+              data={preparedData}
+              margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+            >
               <CartesianGrid strokeDasharray="4 3" />
               <XAxis dataKey="date" hide />
               <YAxis />

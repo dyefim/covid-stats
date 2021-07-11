@@ -1,6 +1,6 @@
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import { GlobalFilters } from '../../App';
+import { CaseType, GlobalFilters } from '../../App';
 import useCaseTypeSelection, {
   caseOptions,
 } from '../../hooks/events/useCaseTypeSelection';
@@ -13,9 +13,11 @@ import Select from '../../components/forms/Select';
 interface Props {
   globalFilters: GlobalFilters;
   setGlobalFilters: (filters: GlobalFilters) => void;
+  typeOfCasesGlobal: CaseType;
+  setTypeOfCasesGlobal: (caseType: CaseType) => void
 }
 
-const FilteringForm = ({ globalFilters, setGlobalFilters }: Props) => {
+const FilteringForm = ({ globalFilters, setGlobalFilters, typeOfCasesGlobal, setTypeOfCasesGlobal }: Props) => {
   const classes = useStyles();
 
   const today = getTodayDate();
@@ -23,7 +25,7 @@ const FilteringForm = ({ globalFilters, setGlobalFilters }: Props) => {
 
   const handleDateChange = useDateSelection(setGlobalFilters);
 
-  const handleCaseTypeSelection = useCaseTypeSelection(setGlobalFilters);
+  const handleCaseTypeSelection = useCaseTypeSelection(setTypeOfCasesGlobal);
 
   return (
     <div className={classes.root}>
@@ -54,7 +56,7 @@ const FilteringForm = ({ globalFilters, setGlobalFilters }: Props) => {
           name="cases"
           label="Cases"
           options={caseOptions}
-          value={globalFilters.typeOfCases}
+          value={typeOfCasesGlobal}
           handleSelection={handleCaseTypeSelection}
           className={classes.input}
         />

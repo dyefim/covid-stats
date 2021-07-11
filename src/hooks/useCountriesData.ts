@@ -5,20 +5,23 @@ import { appendToState } from '../utils/stateMutations';
 
 interface Params {
   selectedCountries: string[];
-  filtersForLiveData: FiltersForLiveData;
+  filters: FiltersForLiveData;
 }
 
-const useCountriesData = ({
-  selectedCountries,
-  filtersForLiveData,
-}: Params) => {
+const useCountriesData = ({ selectedCountries, filters }: Params) => {
   const [countriesDataByDate, setCountriesDataByDate] = useState({});
 
   useEffect(() => {
-    const getDataByCounry = async (country: string) => {
+    const getDataByCounry = async ({
+      country,
+      date_from,
+    }: {
+      country: string;
+      date_from: string;
+    }) => {
       const responseData = await requestCountryCases({
         country,
-        ...filtersForLiveData,
+        date_from,
       });
 
       return responseData;
@@ -27,13 +30,16 @@ const useCountriesData = ({
     setCountriesDataByDate({});
 
     selectedCountries.forEach(async (country) => {
-      const response = await getDataByCounry(country);
+      const response = await getDataByCounry({
+        country,
+        date_from: filters.date_from,
+      });
 
-      if (response.length) {
+      if (response && response.length) {
         setCountriesDataByDate((state) => appendToState(state, response));
       }
     });
-  }, [selectedCountries, filtersForLiveData]);
+  }, [filters.date_from, selectedCountries]);
 
   return countriesDataByDate;
 };
