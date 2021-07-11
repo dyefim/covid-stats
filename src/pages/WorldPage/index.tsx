@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { getYyyyMmDd } from '../../utils/dates';
-import ContainerWithDrawer from '../ContainerWithDrawer';
+import ContainerWithDrawer from '../../components/ContainerWithDrawer';
 
 export type GlobalData = {
   Date: string;

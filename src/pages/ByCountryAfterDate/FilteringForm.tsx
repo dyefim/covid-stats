@@ -1,5 +1,4 @@
 import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -15,6 +14,8 @@ import useCaseTypeSelection, {
 import useDateSelection from '../../hooks/events/useDateSelection';
 import { getNextDay } from '../../utils/dates';
 import useStyles from '../../styles/DrawerFormStyles';
+import DatePicker from '../../components/forms/DatePicker';
+import { default as CustomSelect } from '../../components/forms/Select';
 
 interface Props {
   filtersForLiveData: FiltersForLiveData;
@@ -58,41 +59,23 @@ const FilteringForm = ({
           Pick Countries and Date
         </Typography>
 
-        <FormControl className={classes.input}>
-          <TextField
-            fullWidth
-            type="date"
-            name="date_from"
-            id="date_from"
-            label="From"
-            inputProps={{
-              min: '2019-01-01',
-              max: tomorrow,
-            }}
-            value={filtersForLiveData.date_from}
-            onChange={handleDateChange}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </FormControl>
+        <DatePicker
+          className={classes.input}
+          label={'From'}
+          name="date_from"
+          value={filtersForLiveData.date_from}
+          handleChange={handleDateChange}
+          max={tomorrow}
+        />
 
-        <FormControl className={classes.input}>
-          <TextField
-            select
-            id="cases"
-            label="Cases"
-            value={filtersForLiveData.typeOfCases}
-            onChange={handleCaseTypeSelection}
-            variant="standard"
-          >
-            {caseOptions.map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </TextField>
-        </FormControl>
+        <CustomSelect
+          name="cases"
+          label="Cases"
+          options={caseOptions}
+          value={filtersForLiveData.typeOfCases}
+          handleSelection={handleCaseTypeSelection}
+          className={classes.input}
+        />
       </Grid>
 
       <FormControl className={classes.select}>

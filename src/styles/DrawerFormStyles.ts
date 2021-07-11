@@ -1,26 +1,26 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { drawerWidth } from './ContainerWithDrawerStyles';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    padding: '5px',
+    padding: theme.spacing(0.5),
   },
   form: {
-    padding: '5px',
+    padding: theme.spacing(0.5),
   },
   legend: {
-    marginLeft: '5px',
+    marginLeft: theme.spacing(0.5),
     marginBottom: '10px',
     color: '#777',
   },
   input: {
-    width: `calc(${drawerWidth}px - 20px)`,
-    margin: '5px',
+    width: `calc(${drawerWidth}px - ${theme.spacing(2)}px)`,
+    margin: theme.spacing(0.5),
     marginBottom: '20px',
   },
   select: {
-    margin: '5px',
-    width: `calc(${drawerWidth}px - 25px)`,
+    margin: theme.spacing(0.5),
+    width: `calc(${drawerWidth}px - ${theme.spacing(1.5)}px)`,
   },
 }));
 

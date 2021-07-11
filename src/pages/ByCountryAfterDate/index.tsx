@@ -12,7 +12,7 @@ import {
 } from 'recharts';
 import toTitleCase from '../../utils/toTitleCase';
 import { prepareStateForChart } from '../../utils/stateMutations';
-import ContainerWithDrawer from '../ContainerWithDrawer';
+import ContainerWithDrawer from '../../components/ContainerWithDrawer';
 
 const getRandomColor = () => {
   var letters = '3456789ABC';

@@ -1,6 +1,3 @@
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { GlobalFilters } from '../../App';
@@ -10,6 +7,8 @@ import useCaseTypeSelection, {
 import useDateSelection from '../../hooks/events/useDateSelection';
 import { getTodayDate, getNextDay } from '../../utils/dates';
 import useStyles from '../../styles/DrawerFormStyles';
+import DatePicker from '../../components/forms/DatePicker';
+import Select from '../../components/forms/Select';
 
 interface Props {
   globalFilters: GlobalFilters;
@@ -33,60 +32,32 @@ const FilteringForm = ({ globalFilters, setGlobalFilters }: Props) => {
           Pick Date range and Case
         </Typography>
 
-        <FormControl className={classes.input}>
-          <TextField
-            fullWidth
-            type="date"
-            name="date_from"
-            id="date_from"
-            label="From"
-            inputProps={{
-              min: '2019-01-01',
-              max: today,
-            }}
-            value={globalFilters.date_from}
-            onChange={handleDateChange}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </FormControl>
+        <DatePicker
+          className={classes.input}
+          label={'From'}
+          name="date_from"
+          value={globalFilters.date_from}
+          handleChange={handleDateChange}
+          max={today}
+        />
 
-        <FormControl className={classes.input}>
-          <TextField
-            fullWidth
-            type="date"
-            name="date_to"
-            id="date_to"
-            label="To"
-            inputProps={{
-              min: '2019-01-01',
-              max: tomorrow,
-            }}
-            value={globalFilters.date_to}
-            onChange={handleDateChange}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </FormControl>
+        <DatePicker
+          label={'To'}
+          name="date_to"
+          value={globalFilters.date_to}
+          handleChange={handleDateChange}
+          max={tomorrow}
+          className={classes.input}
+        />
 
-        <FormControl className={classes.input}>
-          <TextField
-            select
-            id="cases"
-            label="Cases"
-            value={globalFilters.typeOfCases}
-            onChange={handleCaseTypeSelection}
-            variant="standard"
-          >
-            {caseOptions.map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </TextField>
-        </FormControl>
+        <Select
+          name="cases"
+          label="Cases"
+          options={caseOptions}
+          value={globalFilters.typeOfCases}
+          handleSelection={handleCaseTypeSelection}
+          className={classes.input}
+        />
       </Grid>
     </div>
   );

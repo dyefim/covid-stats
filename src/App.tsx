@@ -1,7 +1,7 @@
 import Container from '@material-ui/core/Container';
 import { useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Navigation from './Navigation';
+import Navigation from './components/Navigation';
 import { getTodayDate, jumpDays } from './utils/dates';
 import collectionToObject from './utils/collectionToObject';
 import Routes from './pages/Routes';
