@@ -29,7 +29,7 @@ const useCountriesData = ({ selectedCountries, filters }: Params) => {
 
     setCountriesDataByDate({});
 
-    selectedCountries.forEach(async (country) => {
+    const requestDataForSingleCountry = async (country: string) => {
       const response = await getDataByCounry({
         country,
         date_from: filters.date_from,
@@ -38,6 +38,12 @@ const useCountriesData = ({ selectedCountries, filters }: Params) => {
       if (response && response.length) {
         setCountriesDataByDate((state) => appendToState(state, response));
       }
+    };
+
+    selectedCountries.forEach(async (country, index) => {
+      setTimeout(() => {
+        requestDataForSingleCountry(country);
+      }, index * 750);
     });
   }, [filters.date_from, selectedCountries]);
 
