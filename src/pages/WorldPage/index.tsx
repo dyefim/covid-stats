@@ -1,3 +1,4 @@
+import Typography from '@material-ui/core/Typography';
 import { GlobalFilters } from '../../App';
 import FilteringForm from './FilteringForm';
 import {
@@ -41,7 +42,9 @@ const World = ({ data, globalFilters, setGlobalFilters }: WorldProps) => {
 
   return (
     <div>
-      <h1>World</h1>
+      <Typography variant="h5" component="h1" gutterBottom>
+        Global data
+      </Typography>
       <FilteringForm
         globalFilters={globalFilters}
         setGlobalFilters={setGlobalFilters}

@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Country } from '../App';
 import requestCountries from '../services/requestCountries';
+
+interface Country {
+  Country: string;
+  Slug: string;
+  ISO2: string;
+}
 
 const useCountries = () => {
   const [countries, setCountries] = useState<Country[]>([]);

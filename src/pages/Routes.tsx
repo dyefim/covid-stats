@@ -2,13 +2,13 @@ import { Switch, Route } from 'react-router-dom';
 import About from './About';
 import ByCountryAfterDate, { DataByCountry } from './ByCountryAfterDate';
 import World, { GlobalData } from './WorldPage';
-import { Country, GlobalFilters, FiltersForLiveData } from '../App';
+import { Countries, GlobalFilters, FiltersForLiveData } from '../App';
 
 interface Props {
   globalData: GlobalData;
   globalFilters: GlobalFilters;
   setGlobalFilters: (filters: GlobalFilters) => void;
-  countries: Country[];
+  countries: Countries;
   selectedCountries: string[];
   setSelectedCountries: (countries: string[]) => void;
   countriesDataByDate: {

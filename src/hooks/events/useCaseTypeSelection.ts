@@ -4,10 +4,12 @@ export const caseOptions = ['confirmed', 'recovered', 'deaths'];
 
 // type Filters = GlobalFilters | FiltersForLiveData;
 
+type SelectEvent = React.ChangeEvent<
+  HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement
+>;
+
 const useCaseTypeSelection = (filterSetter: (filters: any) => void) => {
-  const handleCaseTypeSelecting = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const handleCaseTypeSelecting = (event: SelectEvent) => {
     event.preventDefault();
 
     const value = event.target.value as CaseType;

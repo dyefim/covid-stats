@@ -1,5 +1,5 @@
-import React from 'react';
-import { Country, FiltersForLiveData } from '../../App';
+import Typography from '@material-ui/core/Typography';
+import { Countries, FiltersForLiveData } from '../../App';
 import FilteringForm from './FilteringForm';
 import {
   BarChart,
@@ -43,7 +43,7 @@ interface Props {
   data: {
     [c: string]: DataByCountry[];
   };
-  countries: Country[];
+  countries: Countries;
   selectedCountries: string[];
   setSelectedCountries: (countries: string[]) => void;
   filtersForLiveData: FiltersForLiveData;
@@ -62,13 +62,11 @@ const ByCountryAfterDate = ({
 
   const preparedData = prepareStateForChart(data as any);
 
-  const getCountryDetails = (slug: string) => {
-    return countries.find((c) => c.Slug === slug);
-  };
-
   return (
     <div>
-      <h1>Live By Country And Status After Date</h1>
+      <Typography variant="h5" component="h1" gutterBottom>
+        Live By Country And Status After Date
+      </Typography>
 
       <FilteringForm
         filtersForLiveData={filtersForLiveData}
@@ -90,11 +88,11 @@ const ByCountryAfterDate = ({
             <Legend />
 
             {selectedCountries.map((slug) => {
-              const details = getCountryDetails(slug);
+              const details = countries[slug];
 
               if (typeof details === 'undefined') return null;
 
-              const key = `${details.Country}.${caseType}`;
+              const key = `${countries[slug].Country}.${caseType}`;
 
               return (
                 <Bar
@@ -105,16 +103,6 @@ const ByCountryAfterDate = ({
                 />
               );
             })}
-            {/* <Bar
-              dataKey={`Ukraine.${caseType}`}
-              name="Ukraine"
-              fill="#8884d8"
-            />
-            <Bar
-              dataKey={`Russian Federation.${caseType}`}
-              name="Russia"
-              fill="#88d884"
-            /> */}
           </BarChart>
         </ResponsiveContainer>
       </div>

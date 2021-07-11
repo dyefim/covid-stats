@@ -1,7 +1,9 @@
+import Container from '@material-ui/core/Container';
 import { useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Navigation from './Navigation';
 import { getTodayDate, jumpDays } from './utils/dates';
+import collectionToObject from './utils/collectionToObject';
 import Routes from './pages/Routes';
 import useCountries from './hooks/useCountries';
 import useSelectedCountries from './hooks/useSelectedCountries';
@@ -21,18 +23,21 @@ export interface FiltersForLiveData {
   typeOfCases: CaseType;
 }
 
-export interface Country {
-  Country: string;
-  Slug: string;
-  ISO2: string;
+export interface Countries {
+  [slug: string]: {
+    Country: string,
+    ISO2: string
+  }
 }
 
 const App = () => {
   const today = getTodayDate();
-  const countries = useCountries();
+  const countriesCollection = useCountries();
+
+  const countries: Countries = collectionToObject(countriesCollection, 'Slug');
 
   const { selectedCountries, setSelectedCountries } = useSelectedCountries();
-
+  
   const [globalFilters, setGlobalFilters] = useState<GlobalFilters>({
     date_from: jumpDays(-7),
     date_to: today,
@@ -53,7 +58,7 @@ const App = () => {
   });
 
   return (
-    <div className="App">
+    <Container maxWidth="sm">
       <header>СOVID Stats</header>
       <Router>
         <div>
@@ -74,7 +79,7 @@ const App = () => {
           />
         </div>
       </Router>
-    </div>
+    </Container>
   );
 };
 

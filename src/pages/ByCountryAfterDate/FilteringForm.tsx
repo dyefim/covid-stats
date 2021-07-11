@@ -1,5 +1,12 @@
-import React from 'react';
-import { Country, FiltersForLiveData } from '../../App';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+// import FormControl from '@material-ui/core/FormControl';
+import ListItemText from '@material-ui/core/ListItemText';
+import Select from '@material-ui/core/Select';
+import Checkbox from '@material-ui/core/Checkbox';
+import { Countries, FiltersForLiveData } from '../../App';
 import useCaseTypeSelection, {
   caseOptions,
 } from '../../hooks/events/useCaseTypeSelection';
@@ -9,7 +16,7 @@ import { getNextDay } from '../../utils/dates';
 interface Props {
   filtersForLiveData: FiltersForLiveData;
   setFiltersForLiveData: (filters: FiltersForLiveData) => void;
-  countries: Country[];
+  countries: Countries;
   selectedCountries: string[];
   setSelectedCountries: (countries: string[]) => void;
 }
@@ -28,74 +35,74 @@ const FilteringForm = ({
   const handleCaseTypeSelection = useCaseTypeSelection(setFiltersForLiveData);
 
   const handleCountriesSelection = (
-    event: React.ChangeEvent<HTMLSelectElement>
+    event: React.ChangeEvent<{ value: unknown }>
   ) => {
     event.preventDefault();
 
-    const selectedOptions = event.target.selectedOptions;
+    const values = event.target.value;
 
     // FIXME restrict selecting to much or to often
 
-    const values = Array.from(selectedOptions, (item) => item.value);
-
-    // console.log(values);
-
-    setSelectedCountries(values);
+    setSelectedCountries(values as string[]);
   };
-
-  const sortedCountries = countries.sort((a, b) =>
-    a.Slug.localeCompare(b.Slug)
-  );
 
   return (
     <form>
       <legend>Pick countries and date</legend>
-      <label htmlFor="date_from">
-        From
-        <input
-          type="date"
-          name="date_from"
-          id="date_from"
-          min="2019-01-01"
-          max={tomorrow}
-          value={filtersForLiveData.date_from}
-          onChange={handleDateChange}
-        />
-      </label>
 
-      <label htmlFor="cases">
-        Cases
-        <select
-          name="cases"
-          id="cases"
-          value={filtersForLiveData.typeOfCases}
-          onChange={handleCaseTypeSelection}
-        >
-          {caseOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      </label>
+      <TextField
+        type="date"
+        name="date_from"
+        id="date_from"
+        label="From"
+        inputProps={{
+          min: '2019-01-01',
+          max: tomorrow,
+        }}
+        value={filtersForLiveData.date_from}
+        onChange={handleDateChange}
+        InputLabelProps={{
+          shrink: true,
+        }}
+      />
+      <TextField
+        select
+        id="cases"
+        label="Cases"
+        value={filtersForLiveData.typeOfCases}
+        onChange={handleCaseTypeSelection}
+        variant="standard"
+      >
+        {caseOptions.map((option) => (
+          <MenuItem key={option} value={option}>
+            {option}
+          </MenuItem>
+        ))}
+      </TextField>
 
-      <label htmlFor="countries">
-        Countries
-        <select
-          style={{ maxWidth: 250, height: 100 }}
-          name="countries"
-          id="countries"
-          value={selectedCountries}
-          onChange={handleCountriesSelection}
-          multiple
-        >
-          {sortedCountries.map(({ Country, Slug }) => (
-            <option key={Slug} value={Slug}>
-              {Country}
-            </option>
-          ))}
-        </select>
-      </label>
+      <InputLabel id="countries-label">Countries</InputLabel>
+      <Select
+        labelId="countries-label"
+        id="countries"
+        multiple
+        value={selectedCountries}
+        onChange={handleCountriesSelection}
+        input={<Input />}
+        renderValue={(selected) => {
+          return (selected as string[])
+            .map((slug) => {
+              return countries[slug]?.Country || slug;
+            })
+            .join(', ');
+        }}
+      >
+        {Object.entries(countries).map(([slug, { Country: countryName }]) => (
+          <MenuItem key={slug} value={slug}>
+            <Checkbox checked={selectedCountries.indexOf(slug) > -1} />
+            <ListItemText primary={countryName || slug} />
+          </MenuItem>
+        ))}
+      </Select>
     </form>
   );
 };
