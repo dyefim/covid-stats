@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(2),
     width: `calc(${drawerWidth}px - ${theme.spacing(4)}px)`,
   },
+  formControl: {
+    margin: theme.spacing(3),
+  },
 }));
 
 export default useStyles;

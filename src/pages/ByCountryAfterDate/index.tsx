@@ -45,7 +45,7 @@ interface Props {
   };
   countries: Countries;
   selectedCountries: string[];
-  setSelectedCountries: (countries: string[]) => void;
+  setSelectedCountries: React.Dispatch<React.SetStateAction<string[]>>;
   filtersForLiveData: FiltersForLiveData;
   setFiltersForLiveData: (filters: FiltersForLiveData) => void;
   typeOfCasesByCountry: CaseType;

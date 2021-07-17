@@ -1,11 +1,11 @@
+// import { useState } from 'react';
 import FormControl from '@material-ui/core/FormControl';
-import MenuItem from '@material-ui/core/MenuItem';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import ListItemText from '@material-ui/core/ListItemText';
-import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Countries, FiltersForLiveData, CaseType } from '../../App';
 import useCaseTypeSelection, {
@@ -22,7 +22,7 @@ interface Props {
   setFiltersForLiveData: (filters: FiltersForLiveData) => void;
   countries: Countries;
   selectedCountries: string[];
-  setSelectedCountries: (countries: string[]) => void;
+  setSelectedCountries: React.Dispatch<React.SetStateAction<string[]>>;
   typeOfCasesByCountry: CaseType;
   setTypeOfCasesByCountry: (caseType: CaseType) => void;
 }
@@ -44,17 +44,21 @@ const FilteringForm = ({
 
   const handleCaseTypeSelection = useCaseTypeSelection(setTypeOfCasesByCountry);
 
-  const handleCountriesSelection = (
-    event: React.ChangeEvent<{ value: unknown }>
-  ) => {
-    event.preventDefault();
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // setState({ ...state, [event.target.name]: event.target.checked });
+    const isCheck = event.target.checked;
 
-    const values = event.target.value;
+    const slug = event.target.name;
 
-    // FIXME restrict selecting to much or to often
-
-    setSelectedCountries(values as string[]);
+    if (isCheck) {
+      setSelectedCountries((sc) => [...sc, slug]);
+    } else {
+      setSelectedCountries((sc) => sc.filter((c) => c !== slug));
+    }
   };
+
+  const lessThanOne = selectedCountries.length < 1;
+  // const lessThanOne = Object.values(state).filter(Boolean).length < 1;
 
   return (
     <div className={classes.root}>
@@ -82,30 +86,33 @@ const FilteringForm = ({
         />
       </Grid>
 
-      <FormControl className={classes.select}>
-        <InputLabel id="countries-label">Countries</InputLabel>
-        <Select
-          labelId="countries-label"
-          id="countries"
-          multiple
-          value={selectedCountries}
-          onChange={handleCountriesSelection}
-          input={<Input />}
-          renderValue={(selected) => {
-            return (selected as string[])
-              .map((slug) => {
-                return countries[slug]?.Country || slug;
-              })
-              .join(', ');
-          }}
-        >
-          {Object.entries(countries).map(([slug, { Country: countryName }]) => (
-            <MenuItem key={slug} value={slug}>
-              <Checkbox checked={selectedCountries.indexOf(slug) > -1} />
-              <ListItemText primary={countryName || slug} />
-            </MenuItem>
-          ))}
-        </Select>
+      <FormControl
+        required
+        error={lessThanOne}
+        component="fieldset"
+        className={classes.formControl}
+      >
+        <FormLabel component="legend">Pick Countries</FormLabel>
+        <FormGroup>
+          {Object.entries(countries)
+            .sort(([aSlug], [bSlug]) => aSlug.localeCompare(bSlug))
+            .map(([slug, { Country: countryName }]) => {
+              return (
+                <FormControlLabel
+                  key={slug}
+                  control={
+                    <Checkbox
+                      checked={selectedCountries.includes(slug)}
+                      onChange={handleChange}
+                      name={slug}
+                    />
+                  }
+                  label={countryName}
+                />
+              );
+            })}
+        </FormGroup>
+        <FormHelperText>Pick at least one</FormHelperText>
       </FormControl>
     </div>
   );

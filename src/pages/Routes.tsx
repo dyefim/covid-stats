@@ -14,7 +14,7 @@ interface Props {
   setTypeOfCasesByCountry: (caseType: CaseType) => void;
   countries: Countries;
   selectedCountries: string[];
-  setSelectedCountries: (countries: string[]) => void;
+  setSelectedCountries: React.Dispatch<React.SetStateAction<string[]>>;
   countriesDataByDate: {
     [c: string]: DataByCountry[];
   };
