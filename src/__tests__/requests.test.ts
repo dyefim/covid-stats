@@ -1,6 +1,6 @@
 import makeRequest from '../services/makeRequest';
 
-it('request data for one month', async () => {
+it.skip('request data for one month', async () => {
   const allLiveCasesFor31Days =
     'https://api.covid19api.com/world?from=2021-03-01T00:00:00Z&to=2021-04-01T00:00:00Z';
 
