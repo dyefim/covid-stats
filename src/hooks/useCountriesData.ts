@@ -36,7 +36,7 @@ const useCountriesData = ({ selectedCountries, filters }: Params) => {
       });
 
       if (response && response.length) {
-        setCountriesDataByDate((state) => appendToState(state, response));
+        setCountriesDataByDate(appendToState(response));
       }
     };
 

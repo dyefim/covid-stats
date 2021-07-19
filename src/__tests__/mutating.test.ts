@@ -129,8 +129,8 @@ const dataForChart = [
 it(`nested state buy date and country`, () => {
   let state = {};
 
-  state = appendToState(state, dataFromUkraine);
-  state = appendToState(state, dataFromRussia);
+  state = appendToState(dataFromUkraine)(state);
+  state = appendToState(dataFromRussia)(state);
 
   expect(state).toEqual(mutatedState);
 });
