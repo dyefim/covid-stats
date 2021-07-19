@@ -3,10 +3,10 @@ import { drawerWidth } from './ContainerWithDrawerStyles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // padding: theme.spacing(0.5),
+    margin: theme.spacing(2),
   },
   form: {
-    padding: theme.spacing(0.5),
+    padding: theme.spacing(0.25),
   },
   legend: {
     marginLeft: theme.spacing(0.5),
@@ -15,16 +15,17 @@ const useStyles = makeStyles((theme) => ({
   },
   input: {
     width: `calc(${drawerWidth}px - ${theme.spacing(1.5)}px)`,
-    margin: theme.spacing(2),
-    marginBottom: '20px',
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(4),
   },
   select: {
-    margin: theme.spacing(2),
+    // margin: theme.spacing(0.5),
     width: `calc(${drawerWidth}px - ${theme.spacing(4)}px)`,
   },
-  formControl: {
-    margin: theme.spacing(3),
-  },
+  // formControl: {
+  // marginTop: theme.spacing(2),
+  // marginBottom: theme.spacing(2),
+  // },
 }));
 
 export default useStyles;
