@@ -14,15 +14,6 @@ import toTitleCase from '../../utils/toTitleCase';
 import { prepareStateForChart } from '../../utils/stateMutations';
 import ContainerWithDrawer from '../../components/ContainerWithDrawer';
 
-const getRandomColor = () => {
-  var letters = '3456789ABC';
-  var color = '#';
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * letters.length)];
-  }
-  return color;
-};
-
 export interface DataByCountry {
   Date: string;
   Active: number;
@@ -92,19 +83,23 @@ const ByCountryAfterDate = ({
               <XAxis dataKey="date" hide />
               <YAxis />
               <Tooltip />
-              {selectedCountries.map((slug) => {
+              {selectedCountries.map((slug, i) => {
                 const details = countries[slug];
 
                 if (typeof details === 'undefined') return null;
 
                 const key = `${countries[slug].Country}.${caseType}`;
 
+                const barColor = `hsl(${
+                  (360 / selectedCountries.length) * i + 10
+                }, 80%, 60%)`;
+
                 return (
                   <Bar
                     key={key}
                     dataKey={key}
                     name={details.Country}
-                    fill={getRandomColor()}
+                    fill={barColor}
                   />
                 );
               })}
