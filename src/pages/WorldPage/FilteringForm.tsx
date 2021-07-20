@@ -1,5 +1,4 @@
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 import { CaseType, GlobalFilters } from '../../App';
 import useCaseTypeSelection, {
   caseOptions,
@@ -14,10 +13,15 @@ interface Props {
   globalFilters: GlobalFilters;
   setGlobalFilters: (filters: GlobalFilters) => void;
   typeOfCasesGlobal: CaseType;
-  setTypeOfCasesGlobal: (caseType: CaseType) => void
+  setTypeOfCasesGlobal: (caseType: CaseType) => void;
 }
 
-const FilteringForm = ({ globalFilters, setGlobalFilters, typeOfCasesGlobal, setTypeOfCasesGlobal }: Props) => {
+const FilteringForm = ({
+  globalFilters,
+  setGlobalFilters,
+  typeOfCasesGlobal,
+  setTypeOfCasesGlobal,
+}: Props) => {
   const classes = useStyles();
 
   const today = getTodayDate();
@@ -28,39 +32,34 @@ const FilteringForm = ({ globalFilters, setGlobalFilters, typeOfCasesGlobal, set
   const handleCaseTypeSelection = useCaseTypeSelection(setTypeOfCasesGlobal);
 
   return (
-    <div className={classes.root}>
-      <Grid container className={classes.form}>
-        <Typography component="legend" className={classes.legend}>
-          Pick Date range and Case
-        </Typography>
+    <div className={classes.form}>
+      <Typography component="legend" className={classes.legend}>
+        Pick Date range and Case
+      </Typography>
 
-        <DatePicker
-          className={classes.input}
-          label={'From'}
-          name="date_from"
-          value={globalFilters.date_from}
-          handleChange={handleDateChange}
-          max={today}
-        />
+      <DatePicker
+        label={'From'}
+        name="date_from"
+        value={globalFilters.date_from}
+        handleChange={handleDateChange}
+        max={today}
+      />
 
-        <DatePicker
-          label={'To'}
-          name="date_to"
-          value={globalFilters.date_to}
-          handleChange={handleDateChange}
-          max={tomorrow}
-          className={classes.input}
-        />
+      <DatePicker
+        label={'To'}
+        name="date_to"
+        value={globalFilters.date_to}
+        handleChange={handleDateChange}
+        max={tomorrow}
+      />
 
-        <Select
-          name="cases"
-          label="Cases"
-          options={caseOptions}
-          value={typeOfCasesGlobal}
-          handleSelection={handleCaseTypeSelection}
-          className={classes.input}
-        />
-      </Grid>
+      <Select
+        name="cases"
+        label="Cases"
+        options={caseOptions}
+        value={typeOfCasesGlobal}
+        handleSelection={handleCaseTypeSelection}
+      />
     </div>
   );
 };

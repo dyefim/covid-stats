@@ -39,37 +39,33 @@ const FilteringForm = ({
   const handleCaseTypeSelection = useCaseTypeSelection(setTypeOfCasesByCountry);
 
   return (
-    <div className={classes.root}>
-      <Grid container className={classes.form}>
-        <Typography component="legend" className={classes.legend}>
-          Pick Countries and Date
-        </Typography>
+    <Grid container className={classes.form}>
+      <Typography component="legend" className={classes.legend}>
+        Pick Countries and Date
+      </Typography>
 
-        <DatePicker
-          label={'From'}
-          name="date_from"
-          value={filtersForLiveData.date_from}
-          handleChange={handleDateChange}
-          max={tomorrow}
-          className={classes.input}
-        />
+      <DatePicker
+        label={'From'}
+        name="date_from"
+        value={filtersForLiveData.date_from}
+        handleChange={handleDateChange}
+        max={tomorrow}
+      />
 
-        <CustomSelect
-          name="cases"
-          label="Cases"
-          options={caseOptions}
-          value={typeOfCasesByCountry}
-          handleSelection={handleCaseTypeSelection}
-          className={classes.input}
-        />
+      <CustomSelect
+        name="cases"
+        label="Cases"
+        options={caseOptions}
+        value={typeOfCasesByCountry}
+        handleSelection={handleCaseTypeSelection}
+      />
 
-        <CountriesCheckboxForm
-          countries={countries}
-          selectedCountries={selectedCountries}
-          setSelectedCountries={setSelectedCountries}
-        />
-      </Grid>
-    </div>
+      <CountriesCheckboxForm
+        countries={countries}
+        selectedCountries={selectedCountries}
+        setSelectedCountries={setSelectedCountries}
+      />
+    </Grid>
   );
 };
 
