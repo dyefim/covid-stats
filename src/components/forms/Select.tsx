@@ -1,15 +1,12 @@
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-
-type SelectEventHandler = React.ChangeEventHandler<
-  HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement
->;
+import { SelectEvent } from '../../types/events';
 
 interface Props {
   value: string;
   options: string[];
-  handleSelection: SelectEventHandler;
+  handleSelection: React.EventHandler<SelectEvent>;
   label?: string;
   name?: string;
   className?: string | undefined;

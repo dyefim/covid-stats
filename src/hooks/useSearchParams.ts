@@ -6,12 +6,6 @@ type Params<T> = [T, FilterSetter<T>];
 
 const useSearchParams = <T>([filters, filterSetter]: Params<T>) => {
   useEffect(() => {
-    // console.log(filters);
-
-    // if (Object.values(filters).some(f => !f)) {
-    //   return
-    // }
-
     const searchParams = new URLSearchParams(document.location.search);
 
     const availableFilters = Object.keys(filters);

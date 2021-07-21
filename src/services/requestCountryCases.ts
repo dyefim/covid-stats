@@ -1,6 +1,6 @@
 import makeRequest from './makeRequest';
 import baseUrl from './baseUrl';
-import { CaseType } from '../App';
+import { CaseType } from '../types';
 
 // export enum CaseType {
 //   Confirmed = 'confirmed',

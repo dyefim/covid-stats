@@ -10,28 +10,8 @@ import useSelectedCountries from './hooks/useSelectedCountries';
 import useGlobalData from './hooks/useGlobalData';
 import useCountriesData from './hooks/useCountriesData';
 import { caseOptions } from './hooks/events/useCaseTypeSelection';
-
-export type CaseType = 'confirmed' | 'recovered' | 'deaths';
-
-export interface GlobalFilters {
-  date_from: string;
-  date_to: string;
-  cases: CaseType;
-  [k: string]: string;
-}
-
-export interface FiltersForLiveData {
-  date_from: string;
-  cases: CaseType;
-  [k: string]: string;
-}
-
-export interface Countries {
-  [slug: string]: {
-    Country: string;
-    ISO2: string;
-  };
-}
+import { GlobalFilters, FiltersForLiveData } from './types/filters';
+import { CaseType, Countries } from './types';
 
 const getInitialFilters = () => {
   const searchParams = new URLSearchParams(document.location.search);

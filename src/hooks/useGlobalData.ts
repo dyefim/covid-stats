@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { GlobalFilters } from '../App';
+import { GlobalFilters } from '../types/filters';
 import requestGlobalData from '../services/requestGlobalData';
 
 const useGlobalData = (globalFilters: GlobalFilters) => {

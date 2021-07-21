@@ -1,4 +1,4 @@
-import { GlobalFilters } from '../App';
+import { GlobalFilters } from '../types/filters';
 import baseUrl from './baseUrl';
 import makeRequest from './makeRequest';
 

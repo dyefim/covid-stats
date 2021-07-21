@@ -1,8 +1,8 @@
+type StringOrObjectDate = Date | string | undefined;
+
 const getYyyyMmDd = (date: string) => date.replace(/T(.)+/, '');
 
 const getTodayDate = () => getYyyyMmDd(new Date().toISOString());
-
-type StringOrObjectDate = Date | string | undefined;
 
 const jumpDays = (
   daysToJump: number,

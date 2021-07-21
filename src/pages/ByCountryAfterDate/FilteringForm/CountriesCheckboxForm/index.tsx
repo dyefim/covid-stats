@@ -3,7 +3,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Divider from '@material-ui/core/Divider';
-import { Countries } from '../../../../App';
+import { Countries } from '../../../../types';
 import CheckboxGroup from './CheckboxGroup';
 
 interface Props {

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { FiltersForLiveData } from '../App';
+import { FiltersForLiveData } from '../types/filters';
 import requestCountryCases from '../services/requestCountryCases';
 import { appendToState } from '../utils/stateMutations';
 

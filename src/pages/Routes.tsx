@@ -1,5 +1,6 @@
 import { Switch, Route } from 'react-router-dom';
-import { Countries, GlobalFilters, FiltersForLiveData } from '../App';
+import { Countries } from '../types';
+import {  GlobalFilters, FiltersForLiveData } from '../types/filters';
 import World, { GlobalData } from './WorldPage';
 import ByCountryAfterDate, { DataByCountry } from './ByCountryAfterDate';
 import About from './About';

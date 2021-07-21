@@ -1,13 +1,8 @@
 import { setQueryStringValue } from '../../utils/searchParams';
-import { CaseType } from '../../App';
+import { CaseType } from '../../types';
+import { SelectEvent } from '../../types/events';
 
 export const caseOptions = ['confirmed', 'recovered', 'deaths'];
-
-// type Filters = GlobalFilters | FiltersForLiveData;
-
-type SelectEvent = React.ChangeEvent<
-  HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement
->;
 
 const useCaseTypeSelection = <T>(
   filterSetter: React.Dispatch<React.SetStateAction<T>>

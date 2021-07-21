@@ -1,4 +1,4 @@
-import { GlobalFilters } from '../../App';
+import { GlobalFilters } from '../../types/filters';
 import FilteringForm from './FilteringForm';
 import {
   LineChart,
@@ -22,7 +22,7 @@ export type GlobalData = {
   TotalRecovered: number;
 }[];
 
-export interface WorldProps {
+export interface Props {
   data: GlobalData;
   globalFilters: GlobalFilters;
   setGlobalFilters: React.Dispatch<React.SetStateAction<GlobalFilters>>;
@@ -32,7 +32,7 @@ const World = ({
   data,
   globalFilters,
   setGlobalFilters,
-}: WorldProps) => {
+}: Props) => {
   const preparedData = data.map((d) => ({
     date: getYyyyMmDd(d.Date),
     confirmed: d.NewConfirmed,

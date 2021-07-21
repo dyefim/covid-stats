@@ -1,4 +1,5 @@
-import { Countries, FiltersForLiveData } from '../../App';
+import { FiltersForLiveData } from '../../types/filters';
+import { Countries } from '../../types';
 import FilteringForm from './FilteringForm';
 import {
   BarChart,

@@ -1,6 +1,7 @@
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import { Countries, FiltersForLiveData } from '../../../App';
+import { Countries } from '../../../types';
+import { FiltersForLiveData } from '../../../types/filters';
 import useCaseTypeSelection, {
   caseOptions,
 } from '../../../hooks/events/useCaseTypeSelection';

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { GlobalFilters, FiltersForLiveData } from '../App';
+import { GlobalFilters, FiltersForLiveData } from '../types/filters';
 import { setQueryStringValue } from '../utils/searchParams';
 
 const setFiltersAsSearchParams = (filters: Record<string, string>) => {

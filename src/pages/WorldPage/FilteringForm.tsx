@@ -1,5 +1,5 @@
 import Typography from '@material-ui/core/Typography';
-import { GlobalFilters } from '../../App';
+import { GlobalFilters } from '../../types/filters';
 import useCaseTypeSelection, {
   caseOptions,
 } from '../../hooks/events/useCaseTypeSelection';
