@@ -29,12 +29,14 @@ export interface Props {
 }
 
 const World = ({ data, globalFilters, setGlobalFilters }: Props) => {
-  const preparedData = data.map((d) => ({
-    date: getYyyyMmDd(d.Date),
-    confirmed: d.NewConfirmed,
-    deaths: d.NewDeaths,
-    recovered: d.NewRecovered,
-  }));
+  const preparedData = data
+    .map((d) => ({
+      date: getYyyyMmDd(d.Date),
+      confirmed: d.NewConfirmed,
+      deaths: d.NewDeaths,
+      recovered: d.NewRecovered,
+    }))
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   return (
     <ContainerWithDrawer
