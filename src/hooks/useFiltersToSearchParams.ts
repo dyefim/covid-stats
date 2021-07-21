@@ -12,11 +12,13 @@ const setFiltersAsSearchParams = (filters: Record<string, string>) => {
 interface Params {
   globalFilters: GlobalFilters;
   filtersForLiveData: FiltersForLiveData;
+  selectedCountries: string[];
 }
 
 const useFiltersToSearchParams = ({
   globalFilters,
   filtersForLiveData,
+  selectedCountries,
 }: Params) => {
   const location = useLocation();
 
@@ -27,8 +29,9 @@ const useFiltersToSearchParams = ({
 
     if (location.pathname === '/countries') {
       setFiltersAsSearchParams(filtersForLiveData);
+      setQueryStringValue('countries', selectedCountries);
     }
-  }, [filtersForLiveData, globalFilters, location.pathname]);
+  }, [filtersForLiveData, globalFilters, selectedCountries, location.pathname]);
 };
 
 export default useFiltersToSearchParams;

@@ -32,7 +32,11 @@ const Routes = ({
   filtersForLiveData,
   setFiltersForLiveData,
 }: Props) => {
-  useFiltersToSearchParams({ globalFilters, filtersForLiveData });
+  useFiltersToSearchParams({
+    globalFilters,
+    filtersForLiveData,
+    selectedCountries,
+  });
 
   return (
     <Switch>

@@ -11,7 +11,7 @@ const setQueryWithoutReload = (value: string) => {
 
 const setQueryStringValue = (
   key: string,
-  value: string,
+  value: any,
   queryString = window.location.search
 ) => {
   const searchParams = new URLSearchParams(queryString);
