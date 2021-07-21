@@ -9,6 +9,7 @@ import useCountries from './hooks/useCountries';
 import useSelectedCountries from './hooks/useSelectedCountries';
 import useGlobalData from './hooks/useGlobalData';
 import useCountriesData from './hooks/useCountriesData';
+import { caseOptions } from './hooks/events/useCaseTypeSelection';
 
 export type CaseType = 'confirmed' | 'recovered' | 'deaths';
 
@@ -36,20 +37,31 @@ const App = () => {
 
   const { selectedCountries, setSelectedCountries } = useSelectedCountries();
 
+  const searchParams = new URLSearchParams(document.location.search);
+
   const [globalFilters, setGlobalFilters] = useState<GlobalFilters>({
-    date_from: jumpDays(-7),
-    date_to: today,
+    date_from: searchParams.get('date_from') || jumpDays(-7),
+    date_to: searchParams.get('date_to') || today,
   });
 
+  const isAcceptableCaseType = (caseType: string | null) =>
+    caseType && caseOptions.includes(caseType);
+
+  const caseTypeFromUrl = searchParams.get('cases');
+
+  const initialCaseType = (
+    isAcceptableCaseType(caseTypeFromUrl) ? caseTypeFromUrl : 'confirmed'
+  ) as CaseType;
+
   const [typeOfCasesGlobal, setTypeOfCasesGlobal] =
-    useState<CaseType>('confirmed');
+    useState<CaseType>(initialCaseType);
 
   const [typeOfCasesByCountry, setTypeOfCasesByCountry] =
-    useState<CaseType>('confirmed');
+    useState<CaseType>(initialCaseType);
 
   const [filtersForLiveData, setFiltersForLiveData] =
     useState<FiltersForLiveData>({
-      date_from: jumpDays(-7),
+      date_from: searchParams.get('date_from') || jumpDays(-7),
     });
 
   const globalData = useGlobalData(globalFilters);

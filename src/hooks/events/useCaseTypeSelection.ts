@@ -1,3 +1,4 @@
+import { setQueryStringValue } from '../../utils/searchParams';
 import { CaseType } from '../../App';
 
 export const caseOptions = ['confirmed', 'recovered', 'deaths'];
@@ -13,6 +14,8 @@ const useCaseTypeSelection = (filterSetter: (filter: CaseType) => void) => {
     event.preventDefault();
 
     const value = event.target.value as CaseType;
+
+    setQueryStringValue('cases', value);
 
     if (!caseOptions.includes(value)) {
       throw new Error('Expected valid case option: ' + caseOptions);

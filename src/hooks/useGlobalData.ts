@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react';
+import { GlobalFilters } from '../App';
 import requestGlobalData from '../services/requestGlobalData';
 
-interface Params {
-  date_from: string;
-  date_to: string;
-}
-
-const useGlobalData = (globalFilters: Params) => {
+const useGlobalData = (globalFilters: GlobalFilters) => {
   const [globalData, setGlobalData] = useState([]);
 
   useEffect(() => {

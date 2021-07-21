@@ -11,7 +11,7 @@ import Select from '../../components/forms/Select';
 
 interface Props {
   globalFilters: GlobalFilters;
-  setGlobalFilters: (filters: GlobalFilters) => void;
+  setGlobalFilters: React.Dispatch<React.SetStateAction<GlobalFilters>>;
   typeOfCasesGlobal: CaseType;
   setTypeOfCasesGlobal: (caseType: CaseType) => void;
 }
