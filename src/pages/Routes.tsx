@@ -1,8 +1,9 @@
 import { Switch, Route } from 'react-router-dom';
-import About from './About';
-import ByCountryAfterDate, { DataByCountry } from './ByCountryAfterDate';
-import World, { GlobalData } from './WorldPage';
 import { Countries, GlobalFilters, FiltersForLiveData } from '../App';
+import World, { GlobalData } from './WorldPage';
+import ByCountryAfterDate, { DataByCountry } from './ByCountryAfterDate';
+import About from './About';
+import useFiltersToSearchParams from '../hooks/useFiltersToSearchParams';
 
 interface Props {
   globalData: GlobalData;
@@ -24,7 +25,6 @@ const Routes = ({
   globalData,
   globalFilters,
   setGlobalFilters,
-
   countries,
   selectedCountries,
   setSelectedCountries,
@@ -32,6 +32,8 @@ const Routes = ({
   filtersForLiveData,
   setFiltersForLiveData,
 }: Props) => {
+  useFiltersToSearchParams({ globalFilters, filtersForLiveData });
+
   return (
     <Switch>
       <Route exact path="/">

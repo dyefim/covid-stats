@@ -18,7 +18,6 @@ const useStyles = makeStyles(() => ({
 
 const Navigation = () => {
   const history = useHistory();
-
   const location = useLocation();
 
   const changeLocation = (path = '/') => {
