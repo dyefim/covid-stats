@@ -69,42 +69,35 @@ const ByCountryAfterDate = ({
         />
       }
     >
-      <div>
-        <div style={{ width: '100%', maxWidth: 800, height: 300 }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={preparedData}
-              margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-            >
-              <CartesianGrid strokeDasharray="4 3" />
-              <XAxis dataKey="date" hide />
-              <YAxis />
-              <Tooltip />
-              {selectedCountries.map((slug, i) => {
-                const details = countries[slug];
+      <ResponsiveContainer height={300}>
+        <BarChart data={preparedData} margin={{ right: 5, left: 15 }}>
+          <CartesianGrid strokeDasharray="4 3" />
+          <XAxis dataKey="date" hide />
+          <YAxis />
+          <Tooltip />
+          {selectedCountries.map((slug, i) => {
+            const details = countries[slug];
 
-                if (typeof details === 'undefined') return null;
+            if (typeof details === 'undefined') return null;
 
-                const key = `${countries[slug].Country}.${caseType}`;
+            const key = `${countries[slug].Country}.${caseType}`;
 
-                const barColor = `hsl(${
-                  (360 / selectedCountries.length) * i + 10
-                }, 80%, 60%)`;
+            const barColor = `hsl(${
+              (360 / selectedCountries.length) * i + 10
+            }, 80%, 60%)`;
 
-                return (
-                  <Bar
-                    key={key}
-                    dataKey={key}
-                    name={details.Country}
-                    fill={barColor}
-                  />
-                );
-              })}
-              <Legend />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
+            return (
+              <Bar
+                key={key}
+                dataKey={key}
+                name={details.Country}
+                fill={barColor}
+              />
+            );
+          })}
+          <Legend />
+        </BarChart>
+      </ResponsiveContainer>
     </ContainerWithDrawer>
   );
 };

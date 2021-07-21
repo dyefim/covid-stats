@@ -28,11 +28,7 @@ export interface Props {
   setGlobalFilters: React.Dispatch<React.SetStateAction<GlobalFilters>>;
 }
 
-const World = ({
-  data,
-  globalFilters,
-  setGlobalFilters,
-}: Props) => {
+const World = ({ data, globalFilters, setGlobalFilters }: Props) => {
   const preparedData = data.map((d) => ({
     date: getYyyyMmDd(d.Date),
     confirmed: d.NewConfirmed,
@@ -50,32 +46,21 @@ const World = ({
         />
       }
     >
-      <div style={{ width: '100%', maxWidth: 800, height: 300 }}>
-        <ResponsiveContainer>
-          <LineChart
-            // width={500}
-            // height={400}
-            data={preparedData}
-            margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-          >
-            <Line
-              type="monotone"
-              dataKey={globalFilters.cases}
-              stroke="#55c"
-              strokeWidth="2"
-            />
+      <ResponsiveContainer height={300}>
+        <LineChart data={preparedData} margin={{ right: 5, left: 15 }}>
+          <Line
+            type="monotone"
+            dataKey={globalFilters.cases}
+            stroke="#55c"
+            strokeWidth="2"
+          />
 
-            <CartesianGrid
-              stroke="#ddd"
-              strokeWidth="1"
-              strokeDasharray="4 3"
-            />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+          <CartesianGrid stroke="#ddd" strokeWidth="1" strokeDasharray="4 3" />
+          <XAxis dataKey="date" />
+          <YAxis />
+          <Tooltip />
+        </LineChart>
+      </ResponsiveContainer>
     </ContainerWithDrawer>
   );
 };

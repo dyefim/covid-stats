@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
   },
   content: {
+    width: '100%',
     flexGrow: 1,
     padding: theme.spacing(1),
     transition: theme.transitions.create('margin', {
