@@ -1,6 +1,8 @@
-import Container from '@material-ui/core/Container';
 import { useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import Container from '@material-ui/core/Container';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import theme from './styles/theme';
 import Navigation from './components/Navigation';
 import { getTodayDate, jumpDays } from './utils/dates';
 import collectionToObject from './utils/collectionToObject';
@@ -60,9 +62,9 @@ const App = () => {
   });
 
   return (
-    <Container maxWidth="md">
-      <Router>
-        <div>
+    <MuiThemeProvider theme={theme}>
+      <Container maxWidth="md">
+        <Router>
           <Routes
             globalData={globalData}
             globalFilters={globalFilters}
@@ -74,10 +76,10 @@ const App = () => {
             filtersForLiveData={filtersForLiveData}
             setFiltersForLiveData={setFiltersForLiveData}
           />
-        </div>
-        <Navigation />
-      </Router>
-    </Container>
+          <Navigation />
+        </Router>
+      </Container>
+    </MuiThemeProvider>
   );
 };
 
