@@ -1,4 +1,4 @@
-import { CaseType, Countries, FiltersForLiveData } from '../../App';
+import { Countries, FiltersForLiveData } from '../../App';
 import FilteringForm from './FilteringForm';
 import {
   BarChart,
@@ -38,9 +38,9 @@ interface Props {
   selectedCountries: string[];
   setSelectedCountries: React.Dispatch<React.SetStateAction<string[]>>;
   filtersForLiveData: FiltersForLiveData;
-  setFiltersForLiveData: (filters: FiltersForLiveData) => void;
-  typeOfCasesByCountry: CaseType;
-  setTypeOfCasesByCountry: (caseType: CaseType) => void;
+  setFiltersForLiveData: React.Dispatch<
+    React.SetStateAction<FiltersForLiveData>
+  >;
 }
 
 const ByCountryAfterDate = ({
@@ -50,10 +50,8 @@ const ByCountryAfterDate = ({
   setSelectedCountries,
   filtersForLiveData,
   setFiltersForLiveData,
-  typeOfCasesByCountry,
-  setTypeOfCasesByCountry,
 }: Props) => {
-  const caseType = toTitleCase(typeOfCasesByCountry);
+  const caseType = toTitleCase(filtersForLiveData.cases);
 
   const preparedData = prepareStateForChart(data as any);
 
@@ -67,8 +65,6 @@ const ByCountryAfterDate = ({
           countries={countries}
           selectedCountries={selectedCountries}
           setSelectedCountries={setSelectedCountries}
-          typeOfCasesByCountry={typeOfCasesByCountry}
-          setTypeOfCasesByCountry={setTypeOfCasesByCountry}
         />
       }
     >

@@ -9,7 +9,9 @@ type SelectEvent = React.ChangeEvent<
   HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement
 >;
 
-const useCaseTypeSelection = (filterSetter: (filter: CaseType) => void) => {
+const useCaseTypeSelection = <T>(
+  filterSetter: React.Dispatch<React.SetStateAction<T>>
+) => {
   const handleCaseTypeSelecting = (event: SelectEvent) => {
     event.preventDefault();
 
@@ -21,7 +23,10 @@ const useCaseTypeSelection = (filterSetter: (filter: CaseType) => void) => {
       throw new Error('Expected valid case option: ' + caseOptions);
     }
 
-    filterSetter(value);
+    filterSetter((state) => ({
+      ...state,
+      cases: value,
+    }));
   };
 
   return handleCaseTypeSelecting;

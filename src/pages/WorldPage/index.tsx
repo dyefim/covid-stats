@@ -1,4 +1,4 @@
-import { CaseType, GlobalFilters } from '../../App';
+import { GlobalFilters } from '../../App';
 import FilteringForm from './FilteringForm';
 import {
   LineChart,
@@ -26,16 +26,12 @@ export interface WorldProps {
   data: GlobalData;
   globalFilters: GlobalFilters;
   setGlobalFilters: React.Dispatch<React.SetStateAction<GlobalFilters>>;
-  typeOfCasesGlobal: CaseType;
-  setTypeOfCasesGlobal: (caseType: CaseType) => void;
 }
 
 const World = ({
   data,
   globalFilters,
   setGlobalFilters,
-  typeOfCasesGlobal,
-  setTypeOfCasesGlobal,
 }: WorldProps) => {
   const preparedData = data.map((d) => ({
     date: getYyyyMmDd(d.Date),
@@ -51,8 +47,6 @@ const World = ({
         <FilteringForm
           globalFilters={globalFilters}
           setGlobalFilters={setGlobalFilters}
-          typeOfCasesGlobal={typeOfCasesGlobal}
-          setTypeOfCasesGlobal={setTypeOfCasesGlobal}
         />
       }
     >
@@ -66,7 +60,7 @@ const World = ({
           >
             <Line
               type="monotone"
-              dataKey={typeOfCasesGlobal}
+              dataKey={globalFilters.cases}
               stroke="#55c"
               strokeWidth="2"
             />

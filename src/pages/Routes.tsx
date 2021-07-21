@@ -2,16 +2,12 @@ import { Switch, Route } from 'react-router-dom';
 import About from './About';
 import ByCountryAfterDate, { DataByCountry } from './ByCountryAfterDate';
 import World, { GlobalData } from './WorldPage';
-import { Countries, GlobalFilters, FiltersForLiveData, CaseType } from '../App';
+import { Countries, GlobalFilters, FiltersForLiveData } from '../App';
 
 interface Props {
   globalData: GlobalData;
   globalFilters: GlobalFilters;
   setGlobalFilters: React.Dispatch<React.SetStateAction<GlobalFilters>>;
-  typeOfCasesGlobal: CaseType;
-  setTypeOfCasesGlobal: (caseType: CaseType) => void;
-  typeOfCasesByCountry: CaseType;
-  setTypeOfCasesByCountry: (caseType: CaseType) => void;
   countries: Countries;
   selectedCountries: string[];
   setSelectedCountries: React.Dispatch<React.SetStateAction<string[]>>;
@@ -19,17 +15,16 @@ interface Props {
     [c: string]: DataByCountry[];
   };
   filtersForLiveData: FiltersForLiveData;
-  setFiltersForLiveData: (filters: FiltersForLiveData) => void;
+  setFiltersForLiveData: React.Dispatch<
+    React.SetStateAction<FiltersForLiveData>
+  >;
 }
 
 const Routes = ({
   globalData,
   globalFilters,
   setGlobalFilters,
-  typeOfCasesGlobal,
-  setTypeOfCasesGlobal,
-  typeOfCasesByCountry,
-  setTypeOfCasesByCountry,
+
   countries,
   selectedCountries,
   setSelectedCountries,
@@ -44,8 +39,6 @@ const Routes = ({
           data={globalData}
           globalFilters={globalFilters}
           setGlobalFilters={setGlobalFilters}
-          typeOfCasesGlobal={typeOfCasesGlobal}
-          setTypeOfCasesGlobal={setTypeOfCasesGlobal}
         />
       </Route>
       <Route path="/countries">
@@ -56,8 +49,6 @@ const Routes = ({
           setSelectedCountries={setSelectedCountries}
           filtersForLiveData={filtersForLiveData}
           setFiltersForLiveData={setFiltersForLiveData}
-          typeOfCasesByCountry={typeOfCasesByCountry}
-          setTypeOfCasesByCountry={setTypeOfCasesByCountry}
         />
       </Route>
       <Route path="/about">

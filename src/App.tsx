@@ -16,10 +16,12 @@ export type CaseType = 'confirmed' | 'recovered' | 'deaths';
 export interface GlobalFilters {
   date_from: string;
   date_to: string;
+  cases: CaseType;
 }
 
 export interface FiltersForLiveData {
   date_from: string;
+  cases: CaseType;
 }
 
 export interface Countries {
@@ -29,20 +31,8 @@ export interface Countries {
   };
 }
 
-const App = () => {
-  const today = getTodayDate();
-  const countriesCollection = useCountries();
-
-  const countries: Countries = collectionToObject(countriesCollection, 'Slug');
-
-  const { selectedCountries, setSelectedCountries } = useSelectedCountries();
-
+const getInitialFilters = () => {
   const searchParams = new URLSearchParams(document.location.search);
-
-  const [globalFilters, setGlobalFilters] = useState<GlobalFilters>({
-    date_from: searchParams.get('date_from') || jumpDays(-7),
-    date_to: searchParams.get('date_to') || today,
-  });
 
   const isAcceptableCaseType = (caseType: string | null) =>
     caseType && caseOptions.includes(caseType);
@@ -53,18 +43,34 @@ const App = () => {
     isAcceptableCaseType(caseTypeFromUrl) ? caseTypeFromUrl : 'confirmed'
   ) as CaseType;
 
-  const [typeOfCasesGlobal, setTypeOfCasesGlobal] =
-    useState<CaseType>(initialCaseType);
+  return {
+    date_from: searchParams.get('date_from') || jumpDays(-7),
+    date_to: searchParams.get('date_to') || getTodayDate(),
+    cases: initialCaseType,
+  };
+};
 
-  const [typeOfCasesByCountry, setTypeOfCasesByCountry] =
-    useState<CaseType>(initialCaseType);
+const App = () => {
+  const countriesCollection = useCountries();
+  const countries: Countries = collectionToObject(countriesCollection, 'Slug');
+
+  const { selectedCountries, setSelectedCountries } = useSelectedCountries();
+
+  const { date_from, date_to, cases } = getInitialFilters();
+
+  const [globalFilters, setGlobalFilters] = useState<GlobalFilters>({
+    date_from,
+    date_to,
+    cases,
+  });
+
+  const globalData = useGlobalData(globalFilters);
 
   const [filtersForLiveData, setFiltersForLiveData] =
     useState<FiltersForLiveData>({
-      date_from: searchParams.get('date_from') || jumpDays(-7),
+      date_from,
+      cases,
     });
-
-  const globalData = useGlobalData(globalFilters);
 
   const countriesDataByDate = useCountriesData({
     selectedCountries,
@@ -79,10 +85,6 @@ const App = () => {
             globalData={globalData}
             globalFilters={globalFilters}
             setGlobalFilters={setGlobalFilters}
-            typeOfCasesGlobal={typeOfCasesGlobal}
-            setTypeOfCasesGlobal={setTypeOfCasesGlobal}
-            typeOfCasesByCountry={typeOfCasesByCountry}
-            setTypeOfCasesByCountry={setTypeOfCasesByCountry}
             countries={countries}
             selectedCountries={selectedCountries}
             setSelectedCountries={setSelectedCountries}

@@ -3,17 +3,19 @@ import { GlobalFilters } from '../App';
 import requestGlobalData from '../services/requestGlobalData';
 
 const useGlobalData = (globalFilters: GlobalFilters) => {
+  const { date_from, date_to } = globalFilters;
+
   const [globalData, setGlobalData] = useState([]);
 
   useEffect(() => {
     const getGlobalData = async () => {
-      const responseData = await requestGlobalData(globalFilters);
+      const responseData = await requestGlobalData({ date_from, date_to });
 
       setGlobalData(responseData);
     };
 
     getGlobalData();
-  }, [globalFilters]);
+  }, [date_from, date_to]);
 
   return globalData;
 };

@@ -1,6 +1,6 @@
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import { Countries, FiltersForLiveData, CaseType } from '../../../App';
+import { Countries, FiltersForLiveData } from '../../../App';
 import useCaseTypeSelection, {
   caseOptions,
 } from '../../../hooks/events/useCaseTypeSelection';
@@ -13,12 +13,12 @@ import CountriesCheckboxForm from './CountriesCheckboxForm';
 
 interface Props {
   filtersForLiveData: FiltersForLiveData;
-  setFiltersForLiveData: (filters: FiltersForLiveData) => void;
+  setFiltersForLiveData: React.Dispatch<
+    React.SetStateAction<FiltersForLiveData>
+  >;
   countries: Countries;
   selectedCountries: string[];
   setSelectedCountries: React.Dispatch<React.SetStateAction<string[]>>;
-  typeOfCasesByCountry: CaseType;
-  setTypeOfCasesByCountry: (caseType: CaseType) => void;
 }
 
 const FilteringForm = ({
@@ -27,8 +27,6 @@ const FilteringForm = ({
   countries,
   selectedCountries,
   setSelectedCountries,
-  typeOfCasesByCountry,
-  setTypeOfCasesByCountry,
 }: Props) => {
   const classes = useStyles();
 
@@ -36,7 +34,9 @@ const FilteringForm = ({
 
   const handleDateChange = useDateSelection(setFiltersForLiveData);
 
-  const handleCaseTypeSelection = useCaseTypeSelection(setTypeOfCasesByCountry);
+  const handleCaseTypeSelection = useCaseTypeSelection<FiltersForLiveData>(
+    setFiltersForLiveData
+  );
 
   return (
     <Grid container className={classes.form}>
@@ -56,7 +56,7 @@ const FilteringForm = ({
         name="cases"
         label="Cases"
         options={caseOptions}
-        value={typeOfCasesByCountry}
+        value={filtersForLiveData.cases}
         handleSelection={handleCaseTypeSelection}
       />
 
