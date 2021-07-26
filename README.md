@@ -1,3 +1,7 @@
+<div style="text-align: center;">
+  <img src="screenshot.png" alt="Screenshot"  width="600">
+</div>
+
 ### Libraries used:
 
 - React with TypeScript
